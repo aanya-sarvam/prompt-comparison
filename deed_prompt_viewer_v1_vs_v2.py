@@ -122,7 +122,7 @@ with tab_deeds:
     def hl(row):
         styles = [""] * len(row)
         if row["flipped"]:
-            styles = ["background-color: #fff3b0"] * len(row)
+            styles = ["background-color: #ff9800; color: black; font-weight: bold;"] * len(row)
         return styles
 
     st.dataframe(
