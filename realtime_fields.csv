@@ -1,0 +1,144 @@
+reg_no,book_label,field_id,item_index,attr,english_value,found,odia_text,script,page,confidence,latin_readback,notes
+910010301134,SALE,deed_type,0,,RECONVEYANCE OF MORTGAGE,True,DEED OF RECONVEYANCE OF MORTGAGE PROPERTY,latin,1,0.95,DEED OF RECONVEYANCE OF MORTGAGE PROPERTY,page's own label differs slightly from assigned category
+910010301134,SALE,district,0,,Angul,True,Angul,latin,1,0.95,Angul,
+910010301134,SALE,office,0,,ANGUL,True,ANGUL,latin,1,0.95,ANGUL,
+910010301134,SALE,presentation_date,0,,28th day of April - 03,True,28th day of April - 03,latin,2,0.9,28th day of April - 03,
+910010301134,SALE,consideration_amount,0,,"2,00,000/-",True,"2,00,000/-",latin,1,0.9,"2,00,000/-",
+910010301134,SALE,old_reg_no,0,,1134,True,1134,latin,1,0.95,1134,
+940640200020,MISC,deed_type,0,,Partnership Agreement,True,PARTNERSHIP DEED,latin,1,0.95,PARTNERSHIP DEED,"Title in English on page 1. Assigned value 'Partnership Agreement', text says 'PARTNERSHIP DEED'. There's also Odia text next to it '(ଭାଗୀଦାରି ଦଲିଲ)'."
+940640200020,MISC,district,0,,GANJAM,True,ଗଞ୍ଜାମ,odia,1,0.95,Ganjam,Found at the end of the address.
+940640200020,MISC,office,0,,HINJILI,True,ହିଞ୍ଜିଲି,odia,1,0.95,Hinjili,Found at the end of the address.
+940640200020,MISC,registration_date,0,,09.08.02,True,09.08.02,latin,6,0.9,09.08.02,Handwritten date next to the registering officer signature at the bottom.
+940640200020,MISC,presentation_date,0,,17.07.02,True,17.07.02,latin,6,0.95,17.07.02,Found in the registering officer's stamp.
+940640200020,MISC,old_reg_no,0,,20,True,20,latin,4,0.95,20,Found at the top right as Document No. 20.
+940640200020,MISC,seller_details,1,name,SRI BHAGBAN PATTNAYAK,True,ଶ୍ରୀ ଭଗବାନ ପଟ୍ଟନାୟକ,odia,1,0.95,Sri Bhagaban Pattnayak,First party name.
+940640200020,MISC,seller_details,1,relation_name,Late Bipra Charan Pattnayak,True,ବିପ୍ରଚରଣ ପଟ୍ଟନାୟକ,odia,1,0.95,Bipra Charan Pattnayak,First party's father's name.
+940640200020,MISC,seller_details,1,address,At-Ankorada,True,ଆଙ୍କୋରଡା,odia,1,0.95,Ankorada,First party's address.
+940640200020,MISC,buyer_details,1,name,SRI ARUN KUMAR PATTNAYAK,True,ଶ୍ରୀ ଅରୁଣ କୁମାର ପଟ୍ଟନାୟକ,odia,1,0.95,Sri Arun Kumar Pattnayak,Second party name.
+940640200020,MISC,buyer_details,1,relation_name,Sri Bhagban Pattnayak,True,ଶ୍ରୀ ଭଗବାନ ପଟ୍ଟନାୟକ,odia,1,0.95,Sri Bhagaban Pattnayak,Second party's father's name.
+940640200020,MISC,buyer_details,1,address,At-Ankorada,True,ଆଙ୍କୋରଡା,odia,1,0.95,Ankorada,Second party's address.
+930619800071,WILL,deed_type,0,,OTHER DEED,True,ଇରୁନାମା ବା ଛାଡପତ୍ର,odia,1,0.95,Irunama ba chhadapatra,page's own label differs from assigned category
+930619800071,WILL,district,0,,ଗଞ୍ଜାମ,True,ଗଞ୍ଜାମ,odia,1,0.95,Ganjam,
+930619800071,WILL,office,0,,BERHAMPUR-I,True,ବ୍ରହ୍ମପୁର,odia,1,0.9,Brahmapur,Exact registration office subdivision not explicitly written but Brahmapur is clearly visible
+930619800071,WILL,registration_date,0,,,True,22.6-98,latin,6,0.9,22.6-98,Found in stamp on page 3.
+930619800071,WILL,presentation_date,0,,,True,5.6.98,latin,4,0.9,5.6.98,Found below signature on page 1.
+930619800071,WILL,old_reg_no,0,,71,True,71,latin,1,0.95,71,
+930619800071,WILL,seller_details,1,name,GUNTAMUKULA ARNAPURNA AMMA,True,ଗୁଣ୍ଟାମୁକୁଲ ଅନ୍ନପୂର୍ଣ୍ଣା ଆମ୍ମା,odia,1,0.95,Guntamukula Annapurna Amma,
+930619800071,WILL,seller_details,1,address,At- Berhampur Town,True,ବ୍ରହ୍ମପୁର ଟାଉନ,odia,1,0.9,Brahmapur tauna,
+930619800071,WILL,buyer_details,1,relation_name,Santamukula Shankar Rao,True,ଗୁଣ୍ଟାମୁକୁଲ ଶଙ୍କର ରାଓ,odia,1,0.95,Guntamukula Sankar Rao,Spelling variation: English 'Santamukula' but written 'ଗୁଣ୍ଟାମୁକୁଲ' on page
+930619800071,WILL,buyer_details,1,address,At- Berhampur Town,True,ବ୍ରହ୍ମପୁର ଟାଉନ,odia,1,0.9,Brahmapur tauna,
+930619800071,WILL,property_details,1,village,MAHAMAYIPUR-55,True,ମହମାୟୀପୁର,odia,3,0.95,Mahamayipura,
+930619800071,WILL,property_details,1,khata,978,True,978,latin,3,0.95,978,
+930619800071,WILL,property_details,1,plot,865,True,865,latin,3,0.95,865,
+930619800071,WILL,property_details,1,area,,True,0.014,latin,4,0.85,0.014,Found on page 1.
+930619800071,WILL,seller_details,1,relation_name,,False,,,0,0.0,,Blank in metadata.
+930619800071,WILL,buyer_details,1,name,,False,,,0,0.0,,Blank in metadata.
+910010301236,SALE,deed_type,0,,RECONVEYANCE OF MORTGAGE,True,ଚଳନ୍ତି ବନ୍ଧକ ତମସୁକ,odia,1,0.95,Chalanti Bandhaka Tamasuka,page's own label differs from assigned category
+910010301236,SALE,district,0,,ANGUL,True,ଅନୁଗୋଳ,odia,1,0.95,Anugola,
+910010301236,SALE,office,0,,ANGUL,True,ANGUL,latin,2,0.95,ANGUL,
+910010301236,SALE,registration_date,0,,20-May-2003,True,20-5-2003,latin,6,0.95,20-5-2003,
+910010301236,SALE,presentation_date,0,,14-May-2003,True,"14 th day of May, 2003",latin,2,0.95,"14 th day of May, 2003",
+910010301236,SALE,old_reg_no,0,,1236,True,1236,latin,1,0.95,1236,
+910010301236,SALE,seller_details,1,name,ASHOK KUMAR TRIPATHY,True,ଅଶୋକ କୁମାର ତ୍ରିପାଠୀ,odia,1,0.95,Ashok Kumar Tripathy,Also written in English
+910010301236,SALE,seller_details,1,relation_name,Naresh Chandra tripathy,True,ନରେଶଚନ୍ଦ୍ର ତ୍ରିପାଠୀ,odia,1,0.95,Nareshchandra Tripathy,
+910010301236,SALE,seller_details,1,address,At- Kangalipada Bentapur,True,କାଙ୍ଗୁଲାପଡା ବେଣ୍ଟପୁର,odia,1,0.9,Kangulapada Bentapur,
+910010301236,SALE,buyer_details,1,name,"SECRETARY OF BENTAPUR S. C. S. LTD., ANGUL",True,ସେକ୍ରେଟାରୀ ବେଣ୍ଟପୁର ସେବାସମବାୟ ସମିତି,odia,1,0.9,Secretary Bentapur Sebasamabaya Samiti,
+910010301236,SALE,buyer_details,1,relation_name,Naresh Chandra tripathy,False,,,0,0.0,,This relation belongs to the seller and does not appear for the buyer on the page.
+930660200005,WILL,deed_type,0,,OPEN WILL,True,ଉଇଲ ନାମା,odia,1,0.9,uila nama,Deed type identified from heading
+930660200005,WILL,district,0,,,True,ଗଞ୍ଜାମ,odia,4,0.9,Ganjam,District name found.
+930660200005,WILL,office,0,,,True,KHALLIKOTE,latin,5,0.9,KHALLIKOTE,Registration office found in English.
+930660200005,WILL,registration_date,0,,19-Jun-2002,True,19.6.2002,latin,1,0.95,19.6.2002,
+930660200005,WILL,presentation_date,0,,19-Jun-2002,True,19.6.2002,latin,1,0.95,19.6.2002,
+930660200005,WILL,old_reg_no,0,,5,True,5,latin,1,0.9,5,
+930660200005,WILL,buyer_details,1,name,BHIBI DAS,True,ବିବି ଦାସ,odia,1,0.9,bibi dasa,
+930660200005,WILL,buyer_details,1,relation_name,Jaya Das,True,ଜୟ ଦାସ,odia,1,0.9,jaya dasa,
+930660200005,WILL,buyer_details,1,address,,True,ଖଲ୍ଲିକୋଟ ନୂଆସାହି,odia,4,0.85,Khallikote Nuasahi,Buyer 1 address found.
+930660200005,WILL,buyer_details,2,name,HADI DAS,True,ହାଡି ଦାସ,odia,1,0.9,hadi dasa,
+930660200005,WILL,buyer_details,2,address,,True,ଖଲ୍ଲିକୋଟ ନୂଆସାହି,odia,4,0.85,Khallikote Nuasahi,Buyer 2 address found.
+930660200005,WILL,property_details,1,village,KHALLIKOTE-100,True,ଖଲ୍ଲିକୋଟ,odia,1,0.85,khallikota,Village matched
+930660200005,WILL,property_details,1,khata,162,True,୧୬୨,odia,1,0.9,162,
+930660200005,WILL,property_details,1,plot,1087,True,୧୦୮୭,odia,1,0.9,1087,
+930660200005,WILL,property_details,1,area,,True,0032,mixed,4,0.9,0032,Area found.
+910060504142,SALE,deed_type,0,,,True,ବିକ୍ରୟକବଲା,odia,5,0.95,bikraya kabala,page's own label differs from assigned category
+910060504142,SALE,district,0,,,True,BALASORE,latin,4,0.95,BALASORE,
+910060504142,SALE,office,0,,,True,BALASORE,latin,4,0.95,BALASORE,
+910060504142,SALE,registration_date,0,,,True,21.5.05,latin,5,0.9,21.5.05,
+910060504142,SALE,presentation_date,0,,,True,21.5,latin,4,0.9,21.5,
+910060504142,SALE,consideration_amount,0,,,True,"୧୧,୨୦୦",odia,5,0.95,"11,200",
+910060504142,SALE,old_reg_no,0,,,True,4142,latin,18,0.95,4142,Found on page 3 under 'No'.
+910060504142,SALE,seller_details,1,name,ASHOK KUMAR DASH,True,ASHOK KUMAR DASH,latin,7,0.95,ASHOK KUMAR DASH,English signature found on the side margin.
+910060504142,SALE,seller_details,1,relation_name,,True,ବାଇଧର ଦାଶ,odia,1,0.9,baidhar dash,
+910060504142,SALE,seller_details,1,address,,True,ଦୁମୁଦା,odia,1,0.9,dumuda,
+910060504142,SALE,seller_details,2,name,RUPAK KUMAR DASH,True,Rupak Kumar Dash,latin,7,0.95,Rupak Kumar Dash,English signature found on the side margin.
+910060504142,SALE,seller_details,2,relation_name,,True,ବାଇଧର ଦାଶ,odia,1,0.9,baidhar dash,Implied same father as item 1
+910060504142,SALE,seller_details,2,address,,True,ଦୁମୁଦା,odia,1,0.9,dumuda,Implied same address
+910060504142,SALE,buyer_details,1,name,,True,ଲକ୍ଷ୍ମୀଧର ପୁହାଣ,odia,5,0.95,Laxmidhar Puhana,
+910060504142,SALE,buyer_details,1,relation_name,,True,ରାମଚନ୍ଦ୍ର ପୁହାଣ,odia,5,0.95,Ramachandra Puhana,
+910060504142,SALE,buyer_details,1,address,,True,ଗୋବିନ୍ଦପୁର,odia,1,0.9,gobindpur,
+910060504142,SALE,property_details,1,village,,True,ଖମଟଣା,odia,3,0.9,khamatana,
+910060504142,SALE,property_details,1,khata,,True,୧୮୮/୨୧,odia,3,0.9,188/21,
+910060504142,SALE,property_details,1,plot,,True,୨୬୧,odia,3,0.9,261,
+910060504142,SALE,property_details,1,area,,True,୦.୧୦,odia,3,0.9,0.10,
+941080200517,MISC,deed_type,0,,OTHER DEED,True,GENERAL POWER OF ATTORNEY,latin,1,0.95,GENERAL POWER OF ATTORNEY,Page's own label differs from assigned category 'OTHER DEED'.
+941080200517,MISC,district,0,,KHURDA,True,Khurda,latin,1,0.95,Khurda,
+941080200517,MISC,office,0,,KHURDA(BBSR),True,D.S.R. Bhubaneswar,latin,3,0.85,D.S.R. Bhubaneswar,"Extracted from 'D.S.R. Bhubaneswar, Khurda' on page 3"
+941080200517,MISC,registration_date,0,,11.3.02,True,11.3.02,latin,1,0.9,11.3.02,Located in the registration endorsement block at the bottom right
+941080200517,MISC,presentation_date,0,,6th March 2002,True,6thday of March 2002,latin,3,0.9,6thday of March 2002,
+941080200517,MISC,old_reg_no,0,,517,True,517,latin,1,0.95,517,Located in the top right header
+941080200517,MISC,seller_details,1,name,BHAGABAN PATRA,True,Bhagaban Patra,latin,1,0.95,Bhagaban Patra,
+941080200517,MISC,seller_details,1,relation_name,Ramamruti Patra,True,Ramamurti Patra,latin,1,0.95,Ramamurti Patra,
+941080200517,MISC,seller_details,1,address,At-Raghunath bazar,True,At-Raghunath Bazar,latin,1,0.95,At-Raghunath Bazar,
+941080200517,MISC,buyer_details,1,name,SANJAY KUMAR SAHOO,True,Sanjay Kumar Sahoo,latin,1,0.95,Sanjay Kumar Sahoo,
+941080200517,MISC,buyer_details,1,relation_name,Satyananda Sahoo,True,Satyananda Sahoo,latin,1,0.95,Satyananda Sahoo,
+941080200517,MISC,buyer_details,1,address,At- Plot N0. S.D.-2 V.S.S Nagar,True,"Plot No-S.D-2, V.S.S. Nagar",latin,1,0.9,"Plot No-S.D-2, V.S.S. Nagar",
+941080200517,MISC,property_details,1,village,PANDARA-28,True,PANDARA,latin,3,0.95,PANDARA,
+941080200517,MISC,property_details,1,khata,1330/841,True,1330/841,latin,3,0.95,1330/841,
+941080200517,MISC,property_details,1,plot,6679,True,1601/6679,latin,3,0.95,1601/6679,The document specifies 'Plot No-1601/6679'.
+941080200517,MISC,property_details,1,area,050 Dismil,True,A0.050 decs,latin,3,0.9,A0.050 decs,
+940399700354,MISC,deed_type,0,,,True,GENERAL POWER OF ATTORNEY,latin,1,0.95,GENERAL POWER OF ATTORNEY,page's own label differs slightly from assigned category
+940399700354,MISC,district,0,,,True,Cuttack,latin,1,0.9,Cuttack,
+940399700354,MISC,office,0,,,True,CUTTACK,latin,7,0.9,CUTTACK,Found in English
+940399700354,MISC,registration_date,0,,,True,5/9/97,latin,8,0.95,5/9/97,Found registration date
+940399700354,MISC,presentation_date,0,,,True,5.9.97,latin,1,0.9,5.9.97,
+940399700354,MISC,old_reg_no,0,,,True,354,latin,1,0.95,354,from document header
+940399700354,MISC,buyer_details,1,name,,True,Sri TARUN NANALAL RATHOR,latin,1,0.95,Sri TARUN NANALAL RATHOR,
+940399700354,MISC,buyer_details,1,relation_name,,True,Sri Nanalal Lakhoo Bhai Rathor,latin,1,0.95,Sri Nanalal Lakhoo Bhai Rathor,
+940399700354,MISC,buyer_details,1,address,,True,Jobra Road,latin,1,0.9,Jobra Road,
+940399700354,MISC,buyer_details,2,name,,True,Nanalal Lakhoobhai,latin,1,0.95,Nanalal Lakhoobhai,
+940399700354,MISC,buyer_details,2,relation_name,,True,late Lakhoo Bhai Varjang,latin,1,0.95,late Lakhoo Bhai Varjang,
+940399700354,MISC,buyer_details,2,address,,True,Jobra Road,latin,1,0.95,Jobra Road,
+940619800176,MISC,deed_type,0,,ଏକରାର ନାମା,True,ଏକରାର ନାମା,odia,1,0.9,ekarara nama,Found in the left margin of page 1
+940619800176,MISC,district,0,,GANJAM,True,ଗଞ୍ଜାମ,odia,4,0.95,ganjama,Found on page 1 line 1
+940619800176,MISC,office,0,,BERHAMPUR-I,True,ବ୍ରହ୍ମପୁର,odia,4,0.9,brahmapura,Found on page 1 line 1
+940619800176,MISC,registration_date,0,,31-Jul-1998,True,31/7/98,latin,6,0.95,31/7/98,Registration date on page 3
+940619800176,MISC,presentation_date,0,,31-Jul-1998,False,,,0,0.0,,Not visibly stamped in these pages
+940619800176,MISC,old_reg_no,0,,176,True,176,latin,1,0.95,176,Found in Document No. at top right
+940619800176,MISC,seller_details,1,name,SRI UDAYNATH PATRA,True,ଶ୍ରୀ ଉଦୟ ନାଥ ପାତ୍ର,odia,1,0.9,Sri Udaya Natha Patra,
+940619800176,MISC,seller_details,1,relation_name,Late Dambaru Patra,True,Late Damburu patro,latin,5,0.9,Late Damburu patro,Found in English endorsement on page 2
+940619800176,MISC,seller_details,1,address,P.O.- Brahmapur,True,ବ୍ରହ୍ମପୁର,odia,1,0.9,Brahmapur,Found within the address section
+940619800176,MISC,seller_details,2,relation_name,Late Dambaru Patra,True,Late Damburu patro,latin,5,0.8,Late Damburu patro,Referred from context on page 2
+940619800176,MISC,seller_details,2,address,P.O.- Brahmapur,True,Berhampur,latin,5,0.8,Berhampur,Referred from context on page 2
+940619800176,MISC,property_details,1,village,SASIBHUSANPUR-47,True,ଶଶିଭୂଷଣପୁର,odia,4,0.95,sasibhusunapura,Found on page 1
+940619800176,MISC,property_details,1,khata,793,True,793,latin,4,0.95,793,Found on page 1
+940619800176,MISC,property_details,1,plot,1262,True,1262,latin,4,0.95,1262,Found on page 1
+940619800176,MISC,property_details,1,area,014 Dismil,True,0.014,latin,4,0.9,0.014,Area value on page 1
+940109500038,MISC,deed_type,0,,PARTNERSHIP MORE THAN RS.500,True,ଅଂଶୀଦାର ନାମା,odia,4,0.9,ansidara nama,page's own label differs from assigned category
+940109500038,MISC,district,0,,BALASORE,True,ବାଲେଶ୍ୱର,odia,1,0.9,Baleswara,District name
+940109500038,MISC,office,0,,JALESWARPUR,True,ଜଳେଶ୍ୱରପୁର,odia,4,0.9,Jaleswarpur,
+940109500038,MISC,registration_date,0,,19-May-1995,True,19.5.95,latin,1,0.9,19.5.95,
+940109500038,MISC,presentation_date,0,,19-May-1995,True,19.5.95,latin,1,0.9,19.5.95,
+940109500038,MISC,consideration_amount,0,,10000,True,୧୦୦୦୦,odia,1,0.9,10000,
+940109500038,MISC,old_reg_no,0,,38,True,38,latin,1,0.9,38,Document No 38
+940109500038,MISC,seller_details,1,name,SRI KALI CHARAN PANDIT,True,ଶ୍ରୀ କାଳି ଚରଣ ପଣ୍ଡିତ,odia,1,0.9,Sri Kali Charana Pandita,
+940109500038,MISC,seller_details,1,relation_name,SRI SRUSTIDHAR PANDIT,True,ସୃଷ୍ଟିଧର ପଣ୍ଡିତ,odia,1,0.9,Srustidhara Pandita,
+940109500038,MISC,seller_details,1,address,AT-BAUNSA DIHA,True,ବାଉଁଶ ଡିହା,odia,4,0.9,Baunsa Diha,
+940109500038,MISC,seller_details,2,name,SRI SYAM SUDAR SAHU,True,ଶ୍ୟାମ ସୁନ୍ଦର ସାହୁ,odia,1,0.9,Syama Sundara Sahu,
+940109500038,MISC,seller_details,2,relation_name,LATE-UMAKANTA SAHU,True,ଉମାକାନ୍ତ ସାହୁ,odia,1,0.9,Umakanta Sahu,Late prefix not visible
+940109500038,MISC,seller_details,2,address,AT-TUKURI HAJIRA,True,ଟୁକୁରି ହାଜିରା,odia,4,0.9,Tukuri Hajira,
+940109500038,MISC,buyer_details,1,name,SRI PRADIP KUMAR MOHAMTY,True,ଶ୍ରୀ ପ୍ରଦୀପ କୁମାର ମହାନ୍ତି,odia,1,0.9,Sri Pradipa Kumara Mahanti,
+940109500038,MISC,buyer_details,1,relation_name,SRI RADHA MOHAN MOHANTY,True,ରାଧାମୋହନ ମହାନ୍ତି,odia,1,0.9,Radhamohana Mahanti,
+940109500038,MISC,buyer_details,1,address,AT-SAIT PUT,True,ସାଇତ ପୁର,odia,4,0.9,Saita Pura,
+940109500038,MISC,property_details,1,village,KHADIBILA-201,True,ଖଡିବିଳ ୨୦୧,odia,4,0.9,Khadibila 201,
+940109500038,MISC,property_details,1,khata,287,True,୨୮୭,odia,4,0.9,287,
+940109500038,MISC,property_details,1,plot,1442,True,୧୪୪୨,odia,4,0.9,1442,
+940109500038,MISC,property_details,1,area,2 Acre|0.50 Dismil,True,ଏ୦.୫୦ ଶତକ,odia,4,0.8,A 0.50 sataka,"only 0.50 Dismil observed, not 2 acre"
