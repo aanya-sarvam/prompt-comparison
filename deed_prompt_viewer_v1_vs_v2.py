@@ -50,8 +50,19 @@ merged["direction"] = ""
 merged.loc[(merged["found_old"] == False) & (merged["found_new"] == True), "direction"] = "improved"
 merged.loc[(merged["found_old"] == True) & (merged["found_new"] == False), "direction"] = "regressed"
 
-tab_summary, tab_changes, tab_deeds = st.tabs(
-    ["📊 Field-level delta", "🔀 What actually flipped", "📄 Per-deed side-by-side"]
+# --- Canonical DB metadata value (should be identical across runs; coalesce
+# and flag any real conflicts so data-quality issues surface instead of
+# silently picking one side).
+_ev_old = merged["english_value_old"].fillna("")
+_ev_new = merged["english_value_new"].fillna("")
+merged["metadata_value"] = _ev_old.where(_ev_old != "", _ev_new)
+merged["metadata_conflict"] = (_ev_old != "") & (_ev_new != "") & (_ev_old != _ev_new)
+merged["metadata_missing_one_side"] = (
+    ((_ev_old == "") ^ (_ev_new == "")) & ~merged["metadata_conflict"]
+)
+
+tab_summary, tab_changes, tab_deeds, tab_metadata = st.tabs(
+    ["📊 Field-level delta", "🔀 What actually flipped", "📄 Per-deed side-by-side", "🗂️ DB metadata"]
 )
 
 # --- Summary --------------------------------------------------------------
@@ -86,12 +97,13 @@ with tab_changes:
     st.subheader(f"{len(flips)} field-instances changed found-status between prompt versions")
 
     for direction, label, color in [("improved", "✅ Newly found (old prompt missed it)", "green"),
-                                     ("regressed", "⚠️ No longer found (old prompt reported it)", "orange")]:
+                                     ("regressed", "No longer found (old prompt reported it)", "orange")]:
         group = flips[flips["direction"] == direction]
         st.markdown(f"### {label} — {len(group)}")
         for _, r in group.iterrows():
             with st.container(border=True):
                 st.markdown(f"**Deed `{r['reg_no']}` · field `{r['field_id']}`**")
+                st.caption(f"Original metadata (GCS): **{r.get('metadata_value') or '—'}**")
                 col1, col2 = st.columns(2)
                 with col1:
                     st.caption("OLD prompt")
@@ -108,24 +120,79 @@ with tab_changes:
 
 # --- Per-deed side by side ---------------------------------------------------
 with tab_deeds:
+    st.caption(
+        "For each field: the **original metadata** (the value pulled from the deed's "
+        "record and sent to Gemini as the grounding target) vs what the **old prompt** "
+        "found on the page vs what the **new prompt** found."
+    )
     reg_nos = sorted(merged["reg_no"].astype(str).unique().tolist())
     choice = st.selectbox("Select deed (reg_no)", reg_nos)
     ddf = merged[merged["reg_no"].astype(str) == choice].copy()
 
-    display_cols = [
-        "field_id", "item_index", "attr",
-        "found_old", "odia_text_old",
-        "found_new", "odia_text_new",
+    view = ddf[[
+        "field_id", "item_index", "attr", "metadata_value",
+        "found_old", "odia_text_old", "confidence_old",
+        "found_new", "odia_text_new", "confidence_new",
         "flipped",
-    ]
+    ]].rename(columns={
+        "field_id": "Field",
+        "item_index": "Item",
+        "attr": "Attr",
+        "metadata_value": "Original Metadata (GCS)",
+        "found_old": "Old: Found",
+        "odia_text_old": "Old: Transcribed",
+        "confidence_old": "Old: Conf.",
+        "found_new": "New: Found",
+        "odia_text_new": "New: Transcribed",
+        "confidence_new": "New: Conf.",
+        "flipped": "Flipped",
+    })
 
     def hl(row):
         styles = [""] * len(row)
-        if row["flipped"]:
-            styles = ["background-color: #ff9800; color: black; font-weight: bold;"] * len(row)
+        if row["Flipped"]:
+            styles = ["background-color: #fff3b0"] * len(row)
         return styles
 
     st.dataframe(
-        ddf[display_cols].style.apply(hl, axis=1),
+        view.style.apply(hl, axis=1),
         use_container_width=True, hide_index=True,
     )
+
+# --- DB metadata quality tab -------------------------------------------------
+with tab_metadata:
+    st.subheader("DB metadata value consistency across the two CSV exports")
+    st.caption(
+        "The 'english_value' (DB metadata target) should be identical for the same "
+        "deed/field regardless of which prompt version was tested. Rows below flag "
+        "where it wasn't — a data-export issue, not a prompt issue."
+    )
+
+    conflicts = merged[merged["metadata_conflict"]]
+    missing = merged[merged["metadata_missing_one_side"]]
+
+    c1, c2 = st.columns(2)
+    c1.metric("Real conflicts (different non-empty values)", len(conflicts))
+    c2.metric("Present in one export, blank in the other", len(missing))
+
+    if not conflicts.empty:
+        st.markdown("### ⚠️ Conflicting values")
+        st.dataframe(
+            conflicts[["reg_no", "field_id", "item_index", "attr",
+                       "english_value_old", "english_value_new"]],
+            use_container_width=True, hide_index=True,
+        )
+
+    if not missing.empty:
+        st.markdown("### Missing on one side")
+        st.dataframe(
+            missing[["reg_no", "field_id", "item_index", "attr",
+                     "english_value_old", "english_value_new"]],
+            use_container_width=True, hide_index=True,
+        )
+
+    st.divider()
+    st.markdown("### Full metadata reference (canonical, coalesced)")
+    ref_cols = ["reg_no", "field_id", "item_index", "attr", "metadata_value"]
+    st.dataframe(merged[ref_cols].sort_values(["reg_no", "field_id"]),
+                 use_container_width=True, hide_index=True)
