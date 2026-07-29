@@ -104,11 +104,15 @@ with tab_changes:
                     st.caption("OLD prompt")
                     st.write("found:", r["found_old"])
                     st.write("value:", r.get("odia_text_old") or "—")
+                    if r.get("latin_readback_old"):
+                        st.caption(f"readback: {r['latin_readback_old']}")
                     st.caption(r.get("notes_old") or "")
                 with col2:
                     st.caption("NEW prompt")
                     st.write("found:", r["found_new"])
                     st.write("value:", r.get("odia_text_new") or "—")
+                    if r.get("latin_readback_new"):
+                        st.caption(f"readback: {r['latin_readback_new']}")
                     st.caption(r.get("notes_new") or "")
     if flips.empty:
         st.write("No changes detected between the two uploaded runs.")
@@ -126,8 +130,8 @@ with tab_deeds:
 
     view = ddf[[
         "field_id", "item_index", "attr", "metadata_value",
-        "found_old", "odia_text_old", "confidence_old",
-        "found_new", "odia_text_new", "confidence_new",
+        "found_old", "odia_text_old", "latin_readback_old", "confidence_old",
+        "found_new", "odia_text_new", "latin_readback_new", "confidence_new",
         "flipped",
     ]].rename(columns={
         "field_id": "Field",
@@ -136,9 +140,11 @@ with tab_deeds:
         "metadata_value": "Original Metadata (GCS)",
         "found_old": "Old: Found",
         "odia_text_old": "Old: Transcribed",
+        "latin_readback_old": "Old: Readback",
         "confidence_old": "Old: Conf.",
         "found_new": "New: Found",
         "odia_text_new": "New: Transcribed",
+        "latin_readback_new": "New: Readback",
         "confidence_new": "New: Conf.",
         "flipped": "Flipped",
     })
