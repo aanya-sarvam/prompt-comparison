@@ -10,6 +10,7 @@ Expects these four files in the same folder (or upload from the sidebar):
 """
 
 import json
+import os
 import pandas as pd
 import streamlit as st
 
@@ -46,10 +47,26 @@ with st.sidebar:
     b_csv_f = st.file_uploader(f"Run B realtime_fields.csv", type="csv", key="bc")
     b_json_f = st.file_uploader(f"Run B realtime_summary.json", type="json", key="bj")
 
-    a_df = load_csv(a_csv_f) if a_csv_f else load_csv("realtime_fields_a.csv")
-    b_df = load_csv(b_csv_f) if b_csv_f else load_csv("realtime_fields_b.csv")
-    a_summary = load_json(a_json_f) if a_json_f else load_json("realtime_summary_a.json")
-    b_summary = load_json(b_json_f) if b_json_f else load_json("realtime_summary_b.json")
+def _load_csv_or_none(path):
+    return load_csv(path) if os.path.exists(path) else None
+
+
+def _load_json_or_none(path):
+    return load_json(path) if os.path.exists(path) else None
+
+
+a_df = load_csv(a_csv_f) if a_csv_f else _load_csv_or_none("realtime_fields_a.csv")
+b_df = load_csv(b_csv_f) if b_csv_f else _load_csv_or_none("realtime_fields_b.csv")
+a_summary = load_json(a_json_f) if a_json_f else _load_json_or_none("realtime_summary_a.json")
+b_summary = load_json(b_json_f) if b_json_f else _load_json_or_none("realtime_summary_b.json")
+
+if a_df is None or b_df is None or a_summary is None or b_summary is None:
+    st.warning(
+        "No bundled data files found on this deployment. Please upload all "
+        "four files above (Run A CSV + JSON, Run B CSV + JSON) to continue.",
+        icon="⚠️",
+    )
+    st.stop()
 
 merged = a_df.merge(b_df, on=KEY, suffixes=("_a", "_b"), how="outer", indicator=True)
 merged["flipped"] = merged["found_a"].astype(str) != merged["found_b"].astype(str)
@@ -70,8 +87,8 @@ _ev_a = merged["english_value_a"].fillna("")
 _ev_b = merged["english_value_b"].fillna("")
 merged["metadata_value"] = _ev_a.where(_ev_a != "", _ev_b)
 
-tab_summary, tab_changes, tab_dropped, tab_deeds = st.tabs(
-    ["📊 Field-level delta", "🔀 What actually flipped", "❓ Rows only in one run", "📄 Per-deed side-by-side"]
+tab_summary, tab_changes, tab_deeds = st.tabs(
+    ["📊 Field-level delta", "🔀 What actually flipped", "📄 Per-deed side-by-side"]
 )
 
 # --- Summary --------------------------------------------------------------
@@ -100,9 +117,9 @@ with tab_summary:
     )
     st.bar_chart(sdf.set_index("field")[[f"{label_a} pct", f"{label_b} pct"]])
     st.info(
-        "A 'delta' can come from genuinely different found-rates, OR from the "
-        "row simply not existing in one run's CSV (see the 'Rows only in one "
-        "run' tab before trusting a jump to 100%).",
+        "A field showing 100% doesn't always mean it improved — if that field "
+        "was blank in the DB metadata for a deed, it's skipped entirely rather "
+        "than counted, which can also push the percentage up.",
         icon="ℹ️",
     )
 
@@ -137,24 +154,6 @@ with tab_changes:
     if flips.empty:
         st.write("No changes detected between the two uploaded runs.")
 
-# --- Rows only in one run ----------------------------------------------------
-with tab_dropped:
-    st.subheader("Rows that exist in only one run's CSV")
-    st.caption(
-        "These are NOT found/not-found flips — the field-instance is entirely "
-        "absent from one run's output. Usually this means a blank-metadata "
-        "sub-value got dropped from the target list before reaching the model "
-        "in one run but not the other. Worth checking before trusting a "
-        "found-rate jump caused by a shrinking denominator rather than a real fix."
-    )
-    only_one = merged[merged["row_only_in"] != ""]
-    if only_one.empty:
-        st.write("None — every field-instance appears in both runs.")
-    else:
-        show_cols = ["reg_no", "field_id", "item_index", "attr", "row_only_in",
-                     "english_value_a", "english_value_b", "found_a", "found_b"]
-        st.dataframe(only_one[show_cols], use_container_width=True, hide_index=True)
-
 # --- Per-deed side by side ---------------------------------------------------
 with tab_deeds:
     st.caption(
@@ -169,7 +168,7 @@ with tab_deeds:
         "field_id", "item_index", "attr", "metadata_value",
         "found_a", "odia_text_a", "latin_readback_a", "confidence_a",
         "found_b", "odia_text_b", "latin_readback_b", "confidence_b",
-        "flipped", "row_only_in",
+        "flipped",
     ]].rename(columns={
         "field_id": "Field",
         "item_index": "Item",
@@ -184,15 +183,12 @@ with tab_deeds:
         "latin_readback_b": f"{label_b}: Readback",
         "confidence_b": f"{label_b}: Conf.",
         "flipped": "Flipped",
-        "row_only_in": "Only in",
     })
 
     def hl(row):
         styles = [""] * len(row)
         if row["Flipped"]:
             styles = ["background-color: #ff9800; color: black; font-weight: bold;"] * len(row)
-        elif row["Only in"]:
-            styles = ["background-color: #9e9e9e; color: white;"] * len(row)
         return styles
 
     st.dataframe(
