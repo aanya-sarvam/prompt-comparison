@@ -3,9 +3,9 @@
   "ok": 10,
   "per_field": {
     "deed_type": {
-      "found": 8,
+      "found": 10,
       "total": 10,
-      "pct": 80.0
+      "pct": 100.0
     },
     "district": {
       "found": 10,
@@ -13,9 +13,9 @@
       "pct": 100.0
     },
     "office": {
-      "found": 9,
+      "found": 10,
       "total": 10,
-      "pct": 90.0
+      "pct": 100.0
     },
     "presentation_date": {
       "found": 10,
@@ -27,20 +27,10 @@
       "total": 10,
       "pct": 100.0
     },
-    "seller_details.relation_name": {
-      "found": 9,
-      "total": 10,
-      "pct": 90.0
-    },
     "seller_details.address": {
       "found": 10,
       "total": 10,
       "pct": 100.0
-    },
-    "buyer_details.name": {
-      "found": 9,
-      "total": 10,
-      "pct": 90.0
     },
     "registration_date": {
       "found": 9,
@@ -52,10 +42,20 @@
       "total": 9,
       "pct": 100.0
     },
-    "buyer_details.relation_name": {
-      "found": 8,
+    "seller_details.relation_name": {
+      "found": 9,
       "total": 9,
-      "pct": 88.9
+      "pct": 100.0
+    },
+    "buyer_details.name": {
+      "found": 9,
+      "total": 9,
+      "pct": 100.0
+    },
+    "buyer_details.relation_name": {
+      "found": 9,
+      "total": 9,
+      "pct": 100.0
     },
     "buyer_details.address": {
       "found": 9,
