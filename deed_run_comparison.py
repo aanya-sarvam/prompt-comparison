@@ -14,6 +14,10 @@ import os
 import pandas as pd
 import streamlit as st
 
+from diff_logic import (
+    load_ground_truth, load_realtime, build_comparison, field_summary,
+)
+
 st.set_page_config(page_title="Deed Grounding — Run Comparison", layout="wide")
 
 KEY = ["reg_no", "field_id", "item_index", "attr"]
@@ -47,6 +51,11 @@ with st.sidebar:
     b_csv_f = st.file_uploader(f"Run B realtime_fields.csv", type="csv", key="bc")
     b_json_f = st.file_uploader(f"Run B realtime_summary.json", type="json", key="bj")
 
+    st.header("Ground truth (prompt refinement)")
+    st.caption("Expert-corrected values from the deed-validator DB, vs a fresh Gemini run on the same deeds.")
+    gt_csv_f = st.file_uploader("ground_truth.csv", type="csv", key="gtc")
+    refine_csv_f = st.file_uploader("realtime_fields.csv (fresh run)", type="csv", key="rfc")
+
 def _load_csv_or_none(path):
     return load_csv(path) if os.path.exists(path) else None
 
@@ -68,6 +77,14 @@ if a_df is None or b_df is None or a_summary is None or b_summary is None:
     )
     st.stop()
 
+gt_df = (load_ground_truth(gt_csv_f) if gt_csv_f
+         else (load_ground_truth("ground_truth.csv") if os.path.exists("ground_truth.csv") else None))
+refine_df = (load_realtime(refine_csv_f) if refine_csv_f
+             else (load_realtime("realtime_fields_refine.csv")
+                   if os.path.exists("realtime_fields_refine.csv") else None))
+gt_comparison = build_comparison(gt_df, refine_df) if (gt_df is not None and refine_df is not None) else None
+gt_field_summary = field_summary(gt_comparison) if gt_comparison is not None else None
+
 merged = a_df.merge(b_df, on=KEY, suffixes=("_a", "_b"), how="outer", indicator=True)
 merged["flipped"] = merged["found_a"].astype(str) != merged["found_b"].astype(str)
 merged["direction"] = ""
@@ -87,8 +104,9 @@ _ev_a = merged["english_value_a"].fillna("")
 _ev_b = merged["english_value_b"].fillna("")
 merged["metadata_value"] = _ev_a.where(_ev_a != "", _ev_b)
 
-tab_summary, tab_changes, tab_deeds = st.tabs(
-    ["📊 Field-level delta", "🔀 What actually flipped", "📄 Per-deed side-by-side"]
+tab_summary, tab_changes, tab_deeds, tab_ground_truth = st.tabs(
+    ["📊 Field-level delta", "🔀 What actually flipped", "📄 Per-deed side-by-side",
+     "✅ Ground Truth (prompt refinement)"]
 )
 
 # --- Summary --------------------------------------------------------------
@@ -195,3 +213,67 @@ with tab_deeds:
         view.style.apply(hl, axis=1),
         use_container_width=True, hide_index=True,
     )
+
+# --- Ground Truth vs latest run ---------------------------------------------
+with tab_ground_truth:
+    if gt_comparison is None:
+        st.warning(
+            "Upload both `ground_truth.csv` (expert-corrected DB export) and "
+            "the fresh Gemini `realtime_fields.csv` run on the same deeds "
+            "(sidebar) to use this tab.",
+            icon="⚠️",
+        )
+    else:
+        st.caption(
+            "Expert-corrected ground truth vs a fresh Gemini run on the *same* "
+            "deeds. Gemini gives an Odia value **and** a Latin readback for it; "
+            "the DB export's `corrected_english` plays the same readback role "
+            "for the expert's correction — comparing readback-to-readback "
+            "sidesteps script-choice noise (Odia digits vs Latin digits, "
+            "Odia script vs romanized) and isolates genuine content errors."
+        )
+
+        n_deeds = gt_comparison["deed_number"].nunique()
+        n_script_only = int((gt_comparison["issue_type"] == "script-only (content correct, wrong script)").sum())
+        n_content = int(gt_comparison["issue_type"].str.startswith("content mismatch", na=False).sum())
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Deeds compared", n_deeds)
+        c2.metric("Script-only issues", n_script_only, help="Gemini extracted the right content but rendered odia_text in the wrong script (e.g. Latin instead of Odia).")
+        c3.metric("Genuine content mismatches", n_content, help="The romanized readback itself disagrees — Gemini got the underlying value wrong, not just its script.")
+
+        st.markdown("#### Field accuracy (readback-based)")
+        st.dataframe(
+            gt_field_summary[[
+                "field", "n_deeds", "readback_accuracy_pct", "script_only_issues",
+                "genuine_content_mismatches", "odia_accuracy_pct", "english_accuracy_pct",
+            ]].style.background_gradient(
+                subset=["readback_accuracy_pct"], cmap="RdYlGn", vmin=0, vmax=100),
+            use_container_width=True, hide_index=True,
+        )
+
+        st.markdown("#### Genuine content mismatches — the prompt-refinement list")
+        gcm = gt_comparison[gt_comparison["issue_type"].str.startswith("content mismatch", na=False)]
+        field_filter = st.multiselect("Filter by field", sorted(gcm["field"].unique()), key="gtfilter")
+        if field_filter:
+            gcm = gcm[gcm["field"].isin(field_filter)]
+        st.dataframe(
+            gcm[[
+                "deed_number", "field",
+                "ground_truth_odia", "fresh_gemini_odia",
+                "ground_truth_readback", "fresh_gemini_readback",
+            ]].rename(columns={
+                "ground_truth_odia": "Ground truth (Odia)",
+                "fresh_gemini_odia": "Gemini (Odia)",
+                "ground_truth_readback": "Ground truth readback (EN)",
+                "fresh_gemini_readback": "Gemini readback (EN)",
+            }),
+            use_container_width=True, hide_index=True,
+        )
+
+        with st.expander("Script-only issues (content correct, wrong script — separate fix)"):
+            script_df = gt_comparison[gt_comparison["issue_type"] == "script-only (content correct, wrong script)"]
+            st.dataframe(
+                script_df[["deed_number", "field", "ground_truth_odia", "fresh_gemini_odia",
+                           "ground_truth_readback", "fresh_gemini_readback"]],
+                use_container_width=True, hide_index=True,
+            )

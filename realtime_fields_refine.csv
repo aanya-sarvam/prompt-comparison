@@ -1,0 +1,158 @@
+reg_no,book_label,field_id,item_index,attr,english_value,found,odia_text,script,page,confidence,latin_readback,notes
+910010002511,SALE,deed_type,0,,SALE IMMOVABLE,True,ବିକ୍ରୀ କବଲା,odia,1,0.95,bikri kabala,Transcribed from top title line 'ବିକ୍ରୀ କବଲା' on page 1
+910010002511,SALE,district,0,,ANGUL,True,ANGUL,latin,8,0.99,ANGUL,Written in English block letters on page 2
+910010002511,SALE,office,0,,ANGUL,True,ANGUL,latin,8,0.99,ANGUL,Sub-Register office name on page 2
+910010002511,SALE,registration_date,0,,22-Feb-2000,True,22-2-2001,latin,8,0.95,22-2-2001,Date given under the copying/registration seal on page 2
+910010002511,SALE,presentation_date,0,,07-Nov-2000,True,7th Nov 2000,latin,8,0.98,7th Nov 2000,Presentation endorsement date on page 2
+910010002511,SALE,consideration_amount,0,,18400,True,"୧୮,୪୦୦/-",odia,2,0.95,"18,400/-",Transcribed from page 2 line 8
+910010002511,SALE,old_reg_no,0,,2511,True,2511,latin,7,0.99,2511,Document number at top right of page 1
+910010002511,SALE,seller_details,1,name,ANTARYAMI PRADHAN,True,ଅନ୍ତର୍ଯ୍ୟାମୀ ପ୍ରଧାନ,odia,1,0.95,antaryami pradhan,Transcribed from page 1 right margin and bottom presentant signature
+910010002511,SALE,buyer_details,1,name,KALYAN KUMAR SAHOO,True,କଲ୍ୟାଣ କୁମାର ସାହୁ,odia,2,0.95,kalyana kumara sahu,Transcribed from top line of page 2
+910010002511,SALE,property_details,1,village,BARAGOTHA-37,True,ବରଗୋଠ - ୩୭,odia,7,0.95,Baragotha - 37,Village name in row 2 of table on page 1
+910010002511,SALE,property_details,1,khata,21,True,୨୧,odia,2,0.95,21,Transcribed from Khata line on page 2
+910010002511,SALE,property_details,1,plot,128,True,୧୨୮,odia,2,0.95,128,Transcribed from Plot line on page 2
+910010002511,SALE,property_details,1,area,46 Dismil,True,୪୬ ଡି,odia,2,0.9,46 di,Transcribed from area line on page 2
+910010002511,SALE,property_details,2,village,BARAGOTHA-37,True,ବରଗୋଠ - ୩୭,odia,7,0.95,Baragotha - 37,Village name in row 3 of table on page 1
+910010002511,SALE,property_details,2,khata,21,True,୨୧,odia,2,0.95,21,Transcribed from Khata line on page 2
+910010002511,SALE,property_details,2,plot,128,True,୧୨୮,odia,2,0.95,128,Transcribed from Plot line on page 2
+910010002511,SALE,property_details,2,area,46 Dismil,True,୪୬ ଡି,odia,2,0.9,46 di,Transcribed from area line on page 2
+910010201284,SALE,deed_type,0,,SALE IMMOVABLE,True,ସଫ କବଲା,odia,1,0.95,safa kabala,page heading/type reads safa kabala
+910010201284,SALE,district,0,,ANGUL,True,ଅନୁଗୋଳ,odia,1,0.95,anugola,
+910010201284,SALE,office,0,,ANGUL,True,ଅନୁଗୋଳ,odia,1,0.95,anugola,
+910010201284,SALE,registration_date,0,,31-Oct-2002,True,31-10-02,latin,1,0.95,31-10-02,
+910010201284,SALE,presentation_date,0,,29-Apr-2002,True,୨୯।୪।୨୦୦୨,odia,1,0.95,29.4.2002,
+910010201284,SALE,consideration_amount,0,,18400,True,୧୮୪୦୦,odia,1,0.95,18400,
+910010201284,SALE,old_reg_no,0,,1284,True,1284,latin,1,0.98,1284,
+910010201284,SALE,seller_details,1,name,SHASHI BHUSAN PRADHAN,True,ଶଶୀଭୂଷଣ ପ୍ରଧାନ,odia,1,0.95,shashibhushana pradhana,
+910010201284,SALE,seller_details,1,relation_name,Damodara Pradhan,True,ଦାମୋଦର ପ୍ରଧାନ,odia,4,0.95,damodara pradhan,
+910010201284,SALE,property_details,1,village,BARAGAUNIA-44,True,ବରଗାଉଣିଆ,odia,1,0.9,baragaunia,
+910010201284,SALE,property_details,1,khata,165,True,୧୬୫,odia,4,0.95,165,
+910010201284,SALE,property_details,1,plot,1052,True,୧୦୫୨,odia,4,0.95,1052,
+910010201284,SALE,property_details,1,area,46 Dismil,True,୪୬ ଡିସମିଲ,odia,4,0.95,46 dismil,
+910010201284,SALE,property_details,2,village,BARAGAUNIA-44,True,ବରଗାଉଣିଆ,odia,1,0.9,baragaunia,
+910010201284,SALE,property_details,2,khata,165,True,୧୬୫,odia,4,0.95,165,
+910010201284,SALE,property_details,2,plot,1052,True,୧୦୫୨,odia,4,0.95,1052,
+910010201284,SALE,property_details,2,area,46 Dismil,True,୪୬ ଡିସମିଲ,odia,4,0.95,46 dismil,
+910010202794,SALE,deed_type,0,,SALE IMMOVABLE,True,ଜମି ବିକ୍ରୟ କବଲା,odia,2,0.95,jami bikraya kabala,page's heading for land sale deed
+910010202794,SALE,district,0,,ANGUL,True,ଅନୁଗୋଳ,odia,1,0.95,anugola,
+910010202794,SALE,office,0,,ANGUL,True,ANGUL,latin,2,0.95,ANGUL,
+910010202794,SALE,registration_date,0,,9.10.02,True,9.10.02,latin,2,0.95,9.10.02,
+910010202794,SALE,presentation_date,0,,9.10.02,True,9.10.02,latin,4,0.95,9.10.02,Written in Latin numerals on page 1
+910010202794,SALE,consideration_amount,0,,"୩୫,୦୦୦/",True,"୩୫,୦୦୦/୦୦",odia,3,0.95,"35,000/00",
+910010202794,SALE,old_reg_no,0,,2794,True,2794,latin,12,0.98,2794,Written at top of page 3
+910010202794,SALE,buyer_details,1,name,TRILOCHAN BEHERA,True,ତ୍ରିଲୋଚନ ବେହେରା,odia,1,0.95,trilochan behera,
+910010202794,SALE,property_details,1,village,MAKUNDAPUR-12,True,ମକୁନ୍ଦପୁର,odia,2,0.95,makundapur,
+910010202794,SALE,property_details,1,khata,379/60,True,୩୭୯/୬୦,odia,2,0.95,379/60,
+910010202794,SALE,property_details,1,plot,461/3056,True,୪୬୧/୩୦୫୬,odia,2,0.95,461/3056,
+910010202794,SALE,property_details,1,area,50 DECIMAL,True,୫୦ ଡିସିମିଲି,odia,2,0.95,50 disimili,
+910010300807,SALE,deed_type,0,,RECONVEYANCE OF MORTGAGE,True,ଚଳନ୍ତି ବନ୍ଧକ ତମସୁକ,odia,1,0.95,Chalanti Bandhaka Tamasuka,page heading reads Chalanti Bandhaka Tamasuka (Continuing Mortgage Bond)
+910010300807,SALE,district,0,,ANGUL,True,ଅନୁଗୋଳ,odia,1,0.95,Anugola,
+910010300807,SALE,office,0,,ANGUL,True,ANGUL,latin,2,0.95,ANGUL,
+910010300807,SALE,registration_date,0,,27-Mar-2003,True,27-3-2003,latin,6,0.95,27-3-2003,
+910010300807,SALE,presentation_date,0,,26-Feb-2003,True,ଛବିଶି ତାରିଖ ଫେବ୍ରୁଆରୀ ମାସ ସ୍ନ ଦୁଇହଜାର ତିନି,odia,5,0.9,chhabisi tarikha phebruari masa sna duihajara tini,
+910010300807,SALE,old_reg_no,0,,807,True,807,latin,1,0.95,807,
+910010300807,SALE,seller_details,1,name,NARANA SAHU,True,ନାରଣ ସାହୁ,odia,1,0.95,Narana Sahu,
+910010300807,SALE,buyer_details,1,name,SECRETARY OF BENTAPUR SERVICE CO-OPERATIVE SOCIETY LTD. .,True,ବେଣ୍ଟପୁର ସେବା ସମବାୟ ସମିତି ଲିଃ,odia,1,0.95,Bentapura Seba Samabaya Samiti Li:,
+910010300807,SALE,property_details,1,village,BARA SINGA ( C )-143,True,ବାରସିଂଙ୍ଘା,odia,1,0.95,Barasingha,
+910010300807,SALE,property_details,1,khata,160,True,୧୬୦,odia,1,0.95,160,written vertically in right margin
+910010300807,SALE,property_details,1,plot,345,True,୩୪୫,odia,1,0.95,345,written vertically in right margin
+910010300807,SALE,property_details,1,area,40 Dismil,True,୪୦ ଡିସମିଲ,odia,1,0.95,40 disamila,
+910010300807,SALE,property_details,2,village,BARA SINGA ( C )-143,True,ବାରସିଂଙ୍ଘା,odia,3,0.95,Barasingha,written vertically in right margin of page 3
+910010300807,SALE,property_details,2,khata,160,True,୧୬୦,odia,3,0.95,160,written vertically in right margin of page 3
+910010300807,SALE,property_details,2,plot,345,True,୩୪୫,odia,3,0.95,345,written vertically in right margin of page 3
+910010300807,SALE,property_details,2,area,40 Dismil,True,୦.୪୦,odia,3,0.95,0.40,written as A. 0.40 in margin
+910010300818,SALE,deed_type,0,,କବଲାପତ୍ର,True,ଜମି ବିକ୍ରୟ କବଲା,odia,3,0.95,jami bikraya kabala,Page writes 'ଜମି ବିକ୍ରୟ କବଲା' in body text on page 3.
+910010300818,SALE,district,0,,ଅନୁଗୋଳ,True,ଅନୁଗୋଳ,odia,1,0.95,anugola,
+910010300818,SALE,office,0,,ଅନୁଗୋଳ,True,ANGUL,latin,1,0.95,ANGUL,Office name appears as 'ANGUL' in Latin script on page 1 endorsement stamp.
+910010300818,SALE,registration_date,0,,୧୯/୬/୦୩,True,19/6/03,latin,12,0.95,19/6/03,Written in Latin digits on page 3 seal
+910010300818,SALE,presentation_date,0,,26th day of March 03,True,26th day of March 03,latin,2,0.95,26th day of March 03,
+910010300818,SALE,consideration_amount,0,,୪୧୪୦୦,True,୪୧୪୦୦,odia,3,0.95,41400,
+910010300818,SALE,old_reg_no,0,,818,True,818,latin,12,0.98,818,Transcribed from seal block on page 3
+910010300897,SALE,deed_type,0,,SALE IMMOVABLE,True,ବିକ୍ରୟ ସଫା କବଲା,odia,5,0.95,bikraya safa kabala,Transcribed verbatim from deed type heading on page 2
+910010300897,SALE,district,0,,ANGUL,True,ଅଙ୍ଗୁଳ,odia,3,0.95,angula,
+910010300897,SALE,office,0,,ANGUL,True,ANGUL,latin,1,0.95,ANGUL,
+910010300897,SALE,registration_date,0,,21-Jun-2003,True,୨୧.୬.୦୩,odia,5,0.95,21.6.03,Transcribed from margin registration entry on page 2
+910010300897,SALE,presentation_date,0,,02-Apr-2003,True,୨-୪-୦୩,odia,5,0.95,2-4-03,Transcribed from margin presentation date entry on page 2
+910010300897,SALE,consideration_amount,0,,4950,True,"୪,୯୫୦",odia,3,0.95,"4,950",
+910010300897,SALE,old_reg_no,0,,897,True,897,latin,1,0.95,897,
+910010300897,SALE,seller_details,1,name,BEDA SAHOO,True,ବେଡା ସାହୁ,odia,1,0.95,beda sahu,
+910010300897,SALE,seller_details,1,relation_name,Nilamani Sahoo,True,ନୀଳମଣି ସାହୁ,odia,1,0.95,nilamani sahu,
+910010300897,SALE,seller_details,1,address,At/po-kusakila,True,କୁଶକିଲା,odia,5,0.95,kushakila,Transcribed from village name on page 2
+910010300897,SALE,seller_details,2,name,PRASANNA SAHOO,True,ପ୍ରସନ୍ନ ସାହୁ,odia,1,0.95,prasanna sahu,
+910010300897,SALE,seller_details,2,relation_name,Mahi sahoo,True,ମହି ସାହୁ,odia,1,0.95,mahi sahu,
+910010300897,SALE,seller_details,2,address,At/po-kusakila,True,କୁଶକିଲା,odia,5,0.95,kushakila,Transcribed from village name on page 2
+910010300897,SALE,seller_details,3,name,BHAJAMAN SAHOO,True,ଭଜମନ ସାହୁ,odia,1,0.95,bhajamana sahu,
+910010300897,SALE,seller_details,3,relation_name,Nabaghan Sahoo,True,ନବଘନ ସାହୁ,odia,1,0.95,nabaghana sahu,
+910010300897,SALE,seller_details,3,address,At/po-kusakila,True,କୁଶକିଲା,odia,5,0.95,kushakila,Transcribed from village name on page 2
+910010300897,SALE,seller_details,4,name,SRIDHAR SAHOO,True,ଶ୍ରୀଧର ସାହୁ,odia,1,0.95,sridhara sahu,
+910010300897,SALE,seller_details,4,relation_name,Banamali Sahoo,True,ବନମାଳୀ ସାହୁ,odia,1,0.95,banamali sahu,
+910010300897,SALE,seller_details,4,address,At/po-kusakila,True,କୁଶକିଲା,odia,5,0.95,kushakila,Transcribed from village name on page 2
+910010300897,SALE,seller_details,5,name,PARITRANA SAHOO,True,ପରିତ୍ରାଣ ସାହୁ,odia,1,0.95,paritrana sahu,
+910010300897,SALE,seller_details,5,relation_name,Dasarathi Sahoo,True,ଦାଶରଥୀ ସାହୁ,odia,1,0.95,dasarathi sahu,
+910010300897,SALE,seller_details,5,address,At/po-kusakila,True,କୁଶକିଲା,odia,5,0.95,kushakila,Transcribed from village name on page 2
+910010300897,SALE,buyer_details,1,name,BHAJI SAHOO,True,ଭଜି ସାହୁ,odia,3,0.95,bhaji sahu,
+910010300897,SALE,buyer_details,1,relation_name,Arakhita Sahoo,True,ଅରକ୍ଷିତ ସାହୁ,odia,3,0.95,arakhita sahu,
+910010300897,SALE,buyer_details,1,address,At/po-kusakila,True,କୁଶକିଲା,odia,5,0.95,kushakila,Transcribed from village name on page 2
+910010300897,SALE,buyer_details,2,name,NIMEI SAHOO,True,ନିମେଇ ସାହୁ,odia,3,0.95,nimei sahu,
+910010300897,SALE,buyer_details,2,relation_name,Arakhita Sahoo,True,ଅରକ୍ଷିତ ସାହୁ,odia,3,0.95,arakhita sahu,
+910010300897,SALE,buyer_details,2,address,At/po-kusakila,True,କୁଶକିଲା,odia,5,0.95,kushakila,Transcribed from village name on page 2
+910010300897,SALE,property_details,1,village,KUSHAKILA-3,True,କୁଶକିଲା,odia,5,0.95,kushakila,Transcribed from Mouza entry on page 2 right margin
+910010300897,SALE,property_details,1,khata,77,True,୭୭,odia,3,0.95,77,
+910010300897,SALE,property_details,1,plot,409,True,୪୦୯,odia,5,0.95,409,Transcribed from Plot entry on page 2 right margin
+910010300897,SALE,property_details,1,area,11 Dismil,True,୧୧ ଡସମିଲ୍,odia,3,0.95,11 dasamila,
+910010300897,SALE,property_details,2,village,KUSHAKILA-3,True,କୁଶକିଲା,odia,5,0.95,kushakila,Transcribed from Mouza entry on page 2 right margin
+910010300897,SALE,property_details,2,khata,77,True,୭୭,odia,5,0.95,77,Transcribed from Khata entry on page 2 right margin
+910010300897,SALE,property_details,2,plot,409,True,୪୦୯,odia,5,0.95,409,Transcribed from Plot entry on page 2 right margin
+910010300897,SALE,property_details,2,area,11 Dismil,True,୧୧,odia,5,0.95,11,Transcribed from Rakaba entry on page 2 right margin
+910010300949,SALE,deed_type,0,,SALE IMMOVABLE,True,ଜମି ବିକ୍ରୟ କବଲା ପତ୍ର,odia,2,0.9,Jami Bikraya Kabala Patra,Title heading on page 2
+910010300949,SALE,district,0,,ANGUL,True,ଅନୁଗୁଳ,odia,1,0.95,Anugul,
+910010300949,SALE,office,0,,ANGUL,True,ANGUL,latin,1,0.95,ANGUL,
+910010300949,SALE,registration_date,0,,24-Jun-2003,True,24/6/03,latin,10,0.95,24/6/03,Written next to Registering Officer signature.
+910010300949,SALE,presentation_date,0,,07-Apr-2003,True,7th Apr/03,latin,2,0.95,7th Apr/03,
+910010300949,SALE,consideration_amount,0,,21525,True,୨୧୫୨୫,odia,3,0.95,21525,
+910010300949,SALE,old_reg_no,0,,949,True,949,latin,1,0.95,949,
+910010300949,SALE,seller_details,1,name,CHAKRADHAR PRADHAN,True,ଚକ୍ରଧର ପ୍ରଧାନ,odia,1,0.95,Chakradhar Pradhan,
+910010300949,SALE,seller_details,1,relation_name,Natabarb Pradhan,True,Natabar Pradhan,latin,2,0.9,Natabar Pradhan,Written as Natabar Pradhan in registration endorsement on page 2
+910010300949,SALE,seller_details,1,address,At-Akhandahatta,True,ଅଖଣ୍ଡହତା,odia,7,0.95,akhandahata,
+910010300949,SALE,buyer_details,1,name,AKHAY KUMAR PRADHAN,True,ଅକ୍ଷୟ କୁମାର ପ୍ରଧାନ,odia,1,0.95,Akshaya Kumar Pradhan,
+910010300949,SALE,buyer_details,1,relation_name,Raghab Pradhan,True,ରାଘବ ପ୍ରଧାନ,odia,1,0.95,Raghab Pradhan,
+910010300949,SALE,buyer_details,1,address,At-Akhandahatta,True,ଅଖଣ୍ଡହତା,odia,7,0.95,akhandahata,
+910010300949,SALE,property_details,1,village,KHANDAHATA-153,True,ଅଖଣ୍ଡହତା,odia,1,0.9,Akhandahata,
+910010300949,SALE,property_details,1,khata,68,True,୬୮,odia,3,0.95,68,
+910010300949,SALE,property_details,1,plot,443,True,୪୪୩,odia,3,0.95,443,
+910010300949,SALE,property_details,1,area,21 Dismil,True,୨୧ ଡିସିମିଲ,odia,3,0.95,21 Dismil,
+910010300949,SALE,property_details,2,village,KHANDAHATA-153,True,ଅଖଣ୍ଡହତା,odia,1,0.9,Akhandahata,
+910010300949,SALE,property_details,2,khata,68,True,୬୮,odia,3,0.95,68,
+910010300949,SALE,property_details,2,plot,443,True,୪୪୩,odia,3,0.95,443,
+910010300949,SALE,property_details,2,area,21 Dismil,True,୨୧ ଡିସିମିଲ,odia,3,0.95,21 Dismil,
+910010300957,SALE,deed_type,0,,SALE IMMOVABLE,True,ଖରିଦା କବଲା,odia,3,0.95,Kharida kabala,Transcribed Odia deed heading on page 3
+910010300957,SALE,district,0,,ANGUL,True,ANGUL,latin,1,0.95,ANGUL,Transcribed from stamp on page 1
+910010300957,SALE,office,0,,ANGUL,True,ANGUL,latin,1,0.95,ANGUL,Transcribed from registration seal on page 1
+910010300957,SALE,registration_date,0,,24.6.03,True,୨୪.୬.୨୦୦୩,odia,2,0.9,24.6.2003,Transcribed from top endorsement on page 2
+910010300957,SALE,presentation_date,0,,୭|୪|୦୩,True,୭|୪|୦୩,odia,1,0.95,7|4|03,Transcribed date under seller signature on page 1
+910010300957,SALE,consideration_amount,0,,7700,True,୭୭୦୦-୦୦,odia,3,0.95,7700-00,Transcribed from consideration section on page 3
+910010300957,SALE,old_reg_no,0,,957,True,957,latin,1,0.95,957,Transcribed from top header on page 1
+910010300957,SALE,seller_details,1,name,KRUTIBAS SAHOO,True,କୃତ୍ତିବାସ ସାହୁ,odia,1,0.95,Krutibas Sahoo,Transcribed seller name from page 1
+910010300957,SALE,seller_details,1,relation_name,Kulamani Sahoo,True,କୁଳମଣୀ ସାହୁ,odia,1,0.95,Kulamani Sahoo,Transcribed seller guardian name on page 1
+910010300957,SALE,seller_details,1,address,At-MaraTara,True,Maratara,latin,2,0.9,Maratara,Transcribed from endorsement form on page 2
+910010300957,SALE,buyer_details,1,name,SRIDHAR SAHOO,True,ଶ୍ରୀଧର ସାହୁ,odia,3,0.95,Sridhar Sahoo,Transcribed buyer name from page 3
+910010300957,SALE,buyer_details,1,relation_name,Anand Sahoo,True,ଆନନ୍ଦ ସାହୁ,odia,3,0.95,Anand Sahoo,Transcribed buyer guardian name on page 3
+910010300957,SALE,buyer_details,1,address,At-MaraTara,True,ମରତରା,odia,7,0.9,Maratara,
+910010300957,SALE,property_details,1,area,11 Dismil,True,୧୧ ଡିସମିଲ୍,odia,3,0.95,11 Dismil,Transcribed property area on page 3
+910010300993,SALE,deed_type,0,,ବିକ୍ରୟକବଲା,True,ବିକ୍ରୟ କବଲା,odia,3,0.95,bikraya kabala,Found on page 3 in line reading 'କବୁଲିୟତ ଦଲିଲ - ଜମି ବିକ୍ରୟ କବଲା ।'
+910010300993,SALE,district,0,,ANGUL,True,ANGUL,latin,1,0.95,ANGUL,Found printed in English on page 1 endorsement stamp.
+910010300993,SALE,office,0,,ANGUL,True,ANGUL,latin,1,0.95,ANGUL,Found on page 1 under Registering Officer stamp.
+910010300993,SALE,presentation_date,0,,10/4/03,True,10/4/03,latin,1,0.95,10/4/03,Found written below signature on page 1 endorsement.
+910010300993,SALE,consideration_amount,0,,୬୦୦୦/-,True,୬୦୦୦.୦୦,odia,3,0.95,6000.00,Found on page 3 under ସମ୍ପତ୍ତିର ମୂଲ୍ୟ as ୬୦୦୦.୦୦.
+910010300993,SALE,old_reg_no,0,,993,True,993,latin,1,0.95,993,Found at top right of page 1 stamp area.
+910010300993,SALE,seller_details,1,address,AT-Santarapur,True,ସନ୍ତରାପୁର,odia,1,0.95,Santarapur,Found on page 1 in seller address details as ସା - ସନ୍ତରାପୁର.
+910010300993,SALE,property_details,1,village,SANTARAPUR-46,True,ସାନ୍ତରାପୁର,odia,7,0.95,santarapura,
+910010301013,SALE,deed_type,0,,SALE IMMOVABLE,True,ଜମି ବିକ୍ରୟ କବଲା,odia,3,0.95,Jami Bikraya Kabala,Page heading on Page 3 specifies 'ଜମି ବିକ୍ରୟ କବଲା'
+910010301013,SALE,district,0,,ANGUL,True,ଅନୁଗୋଳ,odia,1,0.95,Anugola,Written in Odia script as 'ଅନୁଗୋଳ' on Page 1; also appears as 'ANGUL' in Latin script
+910010301013,SALE,office,0,,ANGUL,True,ANGUL,latin,1,0.95,ANGUL,Written in Latin script on registration stamp on Page 1
+910010301013,SALE,registration_date,0,,26-Jun-2003,True,26/6/03,latin,2,0.9,26/6/03,Written as 26/6/03 near registration endorsement on Page 2
+910010301013,SALE,presentation_date,0,,୧୫.୪.୦୩,True,୧୫.୪.୦୩,odia,1,0.95,15.4.03,Exact match in Odia script under thumb impression on Page 1
+910010301013,SALE,consideration_amount,0,,୮୩୩୪,True,୮୩୩୪,odia,3,0.95,8334,Exact match in Odia numerals on Page 3
+910010301013,SALE,old_reg_no,0,,1013,True,1013,latin,1,0.95,1013,Written at top right of Page 1
+910010301013,SALE,seller_details,1,address,AT-Ragadiyapada,True,ରଗଡ଼ିଆପଡ଼ା,odia,1,0.95,Ragadiyapada,Seller's village address written in Odia on Page 1
+910010301013,SALE,buyer_details,1,address,AT-Ragadiyapada,True,ରଗଡ଼ିଆପଡ଼ା,odia,3,0.95,Ragadiyapada,Buyer's village address written in Odia on Page 3
