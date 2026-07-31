@@ -1,0 +1,86 @@
+"""
+Ground Truth vs Gemini — Per-Deed Comparison
+Run locally:  streamlit run ground_truth_deed_view.py
+
+For each deed: Gemini's Odia output + its Latin readback, next to the
+expert-corrected ground truth's Odia value + its readback (corrected_english).
+Select a deed from the dropdown to inspect it field-by-field.
+
+Expects these files in the same folder (or upload from the sidebar):
+  ground_truth.csv        (DB export: deed_number, section, label,
+                            corrected_english, corrected_odia,
+                            gemini_original_english, position)
+  realtime_fields.csv     (fresh Gemini run: reg_no, field_id, item_index,
+                            attr, english_value, found, odia_text,
+                            latin_readback, ...)
+"""
+
+import os
+import pandas as pd
+import streamlit as st
+
+from diff_logic import load_ground_truth, load_realtime, build_comparison
+
+st.set_page_config(page_title="Ground Truth vs Gemini — Per-Deed", layout="wide")
+
+st.title("✅ Ground Truth vs Gemini — Per-Deed Comparison")
+st.caption(
+    "Gemini's Odia output + readback vs the expert-corrected ground truth's "
+    "Odia value + readback, for the same deed."
+)
+
+with st.sidebar:
+    st.header("Data source")
+    st.caption("Defaults to the bundled files — upload to override.")
+    gt_f = st.file_uploader("ground_truth.csv", type="csv", key="gt")
+    rt_f = st.file_uploader("realtime_fields.csv", type="csv", key="rt")
+
+gt = load_ground_truth(gt_f) if gt_f else (
+    load_ground_truth("ground_truth.csv") if os.path.exists("ground_truth.csv") else None)
+rt = load_realtime(rt_f) if rt_f else (
+    load_realtime("realtime_fields.csv") if os.path.exists("realtime_fields.csv")
+    else (load_realtime("realtime_fields_refine.csv") if os.path.exists("realtime_fields_refine.csv") else None))
+
+if gt is None or rt is None:
+    st.warning(
+        "Upload both ground_truth.csv and a fresh Gemini realtime_fields.csv "
+        "(sidebar) to continue.",
+        icon="⚠️",
+    )
+    st.stop()
+
+comparison = build_comparison(gt, rt)
+
+reg_nos = sorted(comparison["deed_number"].unique().tolist())
+choice = st.selectbox("Select deed (reg_no)", reg_nos)
+ddf = comparison[comparison["deed_number"] == choice].copy()
+
+view = ddf[[
+    "field",
+    "fresh_gemini_odia", "fresh_gemini_readback",
+    "ground_truth_odia", "ground_truth_readback",
+    "issue_type",
+]].rename(columns={
+    "field": "Field",
+    "fresh_gemini_odia": "Gemini Output (Odia)",
+    "fresh_gemini_readback": "Gemini Readback (EN)",
+    "ground_truth_odia": "Ground Truth (Odia)",
+    "ground_truth_readback": "Ground Truth Readback (EN)",
+    "issue_type": "Status",
+})
+
+
+def hl(row):
+    if row["Status"].startswith("content mismatch"):
+        return ["background-color: #e53935; color: white; font-weight: bold;"] * len(row)
+    if row["Status"] == "script-only (content correct, wrong script)":
+        return ["background-color: #ff9800; color: black; font-weight: bold;"] * len(row)
+    return [""] * len(row)
+
+
+st.dataframe(view.style.apply(hl, axis=1), use_container_width=True, hide_index=True)
+
+st.caption(
+    "🔴 red = genuine content mismatch (readback disagrees — Gemini got the value wrong). "
+    "🟠 orange = script-only (content correct, Gemini just rendered it in the wrong script)."
+)
