@@ -8,6 +8,7 @@ Canonical field vocabulary follows the Gemini side (field_id[.attr]),
 since that's what prompt.py needs to be refined against.
 """
 import re
+from difflib import SequenceMatcher
 import pandas as pd
 
 # section (lowercased, "(n)" suffix stripped) + label (lowercased) -> canonical field
@@ -99,11 +100,91 @@ def _digits_only(s: str) -> str:
     return re.sub(r"\D", "", _to_latin_digits(s))
 
 
+# --- Odia spelling-variant tolerance (names / places) ------------------------
+# The prompt itself explicitly tells Gemini that names and place names can
+# legitimately have more than one valid spelling/transliteration for the SAME
+# entity (matching dialectal/OCR variation in these deeds: retroflex vs dental
+# consonants, nukta presence, long/short vowel matras, nasal clusters). We
+# mirror that tolerance here so the viewer doesn't flag those as real content
+# errors — only a genuinely different name/place should turn red.
+def _fold_odia_variants(s: str) -> str:
+    s = s.strip()
+    s = s.replace("଼", "")                              # drop nukta diacritic
+    s = s.replace("ଣ", "ନ").replace("ଳ", "ଲ")            # retroflex -> dental
+    s = s.replace("ଶ", "ସ").replace("ଷ", "ସ")            # sibilant merge
+    s = s.replace("ଵ", "ବ")                              # v/b merge
+    s = re.sub("ଙ୍", "", s)                              # nasal cluster simplify
+    s = re.sub("ଞ୍", "", s)
+    s = re.sub("ଂ", "", s)                               # bare anusvara
+    s = s.replace("ୌ", "ୋ").replace("ୋ", "ୁ").replace("ୂ", "ୁ")  # vowel matras
+    s = s.replace("ୀ", "ି").replace("ଈ", "ଇ").replace("ଊ", "ଉ")
+    return s
+
+
+_ODIA_BLOCK = re.compile(r"[\u0B00-\u0B7F]")
+
+
+def _is_odia_script(s: str) -> bool:
+    return bool(_ODIA_BLOCK.search(s))
+
+
+_TOKEN_SPLIT = re.compile(r"[\s,\-।]+")
+
+# Last-resort alias table: canonical key for well-known, frequently-recurring
+# Odisha place names, covering both Odia-script and Latin spellings/variants
+# seen in this corpus. Used only when NEITHER side has a readback available
+# to cross-check against (so fuzzy/script-fallback matching has nothing to
+# work with) — a narrow, low-risk safety net, not a general transliterator.
+_PLACE_ALIASES = {
+    "angul": "angul", "anugul": "angul", "anugola": "angul", "angula": "angul",
+    "ଅନୁଗୋଳ": "angul", "ଅନୁଗୁଳ": "angul", "ଅଙ୍ଗୁଳ": "angul", "ଆଙ୍ଗୁଲ": "angul",
+}
+
+
+def _place_alias(s: str) -> str | None:
+    return _PLACE_ALIASES.get(_clean(s).strip().lower())
+
+# Fields where spelling-variant / granularity tolerance applies (per prompt's
+# own NAMES / PLACE NAMES matching rules). Exact-value fields (dates, amounts,
+# khata/plot/old_reg_no) are handled separately and stay strict.
+_FUZZY_FIELDS = {
+    "district", "office", "deed_type",
+}
+_FUZZY_ATTRS = {"village", "name", "relation_name", "address", "area"}
+
+_FUZZY_THRESHOLD = 0.55
+
+
+def _fuzzy_equivalent(a: str, b: str, field: str) -> bool:
+    """True if a and b are a tolerable spelling variant / granularity
+    difference of the SAME name or place, per the prompt's own matching
+    philosophy. Compares folded strings directly, and (for list-item fields
+    with descriptive clauses) also checks token-level overlap so a short
+    extracted core value (e.g. 'Kushakila') matches against a fuller
+    descriptive clause that contains the same place/name embedded in it
+    (e.g. 'mouza - Kushalika, thana - ...')."""
+    fa, fb = _fold_odia_variants(a), _fold_odia_variants(b)
+    if not fa or not fb:
+        return False
+    if SequenceMatcher(None, fa, fb).ratio() >= _FUZZY_THRESHOLD:
+        return True
+    # token-level: does any token of the longer clause resemble the shorter
+    # value closely enough? (handles full-clause vs core-token granularity)
+    longer, shorter = (fa, fb) if len(fa) >= len(fb) else (fb, fa)
+    tokens = [t for t in _TOKEN_SPLIT.split(longer) if t]
+    if len(tokens) > 1:
+        best = max((SequenceMatcher(None, shorter, t).ratio() for t in tokens), default=0)
+        if best >= _FUZZY_THRESHOLD:
+            return True
+    return False
+
+
 def _try_date_key(v: str) -> str | None:
     """If v looks like a date (any common format), return a canonical
     YYYYMMDD-ish key so 07-Nov-2000 == 7th Nov 2000 == 7/11/00. Returns None
     if it doesn't look like a date."""
     s = _to_latin_digits(v).lower().strip()
+    s = s.replace("।", "|")  # Odia danda used as a date separator in some deeds
     s = re.sub(r"\s+", "", s)  # drop internal spaces: '9 .10 .02' -> '9.10.02'
     # Month-name form: 7th nov 2000 / 07-nov-2000 / 26th day of march 03
     m = re.search(r"(\d{1,2}).*?(" + "|".join(_MONTHS) + r")\w*.*?(\d{2,4})", s)
@@ -269,6 +350,53 @@ def build_comparison(gt: pd.DataFrame, rt: pd.DataFrame) -> pd.DataFrame:
             rt_od_key = _content_key(rt_od, field)
             odia_content_match = (
                 gt_od_key == rt_od_key if (gt_od_key or rt_od_key) else None)
+
+            # For place/name-type fields, also accept a tolerable spelling
+            # variant or granularity difference (per the prompt's own NAMES /
+            # PLACE NAMES rules) — compare each comma-split item individually
+            # since these can be multi-item list fields (property/seller/buyer).
+            base_f = field.split(".")[0]
+            attr_f = field.split(".")[1] if "." in field else ""
+            if not odia_content_match and (base_f in _FUZZY_FIELDS or attr_f in _FUZZY_ATTRS):
+                gt_items = [p.strip() for p in gt_od.split(",") if p.strip()]
+                rt_items = [p.strip() for p in rt_od.split(",") if p.strip()]
+                if gt_items and rt_items:
+                    # every Gemini item should fuzzy-match at least one GT item
+                    odia_content_match = all(
+                        any(_fuzzy_equivalent(gi, ri, field) for gi in gt_items)
+                        for ri in rt_items
+                    )
+                # Cross-script fallback: sometimes the DB's "Odia" column was
+                # actually typed in Latin (e.g. corrected_odia="Angul" instead
+                # of "ଅନୁଗୋଳ") — a data-entry quirk, not a Gemini error. In that
+                # case compare against Gemini's OWN Latin readback instead,
+                # with the same fuzzy tolerance.
+                if not odia_content_match and gt_od and rt_od and not _is_odia_script(gt_od):
+                    rt_readback_items = [p.strip() for p in rt_readback.split(",") if p.strip()]
+                    if rt_readback_items:
+                        odia_content_match = all(
+                            any(_fuzzy_equivalent(gi, ri, field) for gi in gt_items)
+                            for ri in rt_readback_items
+                        )
+                # Symmetric case: Gemini itself put Latin text in odia_text
+                # (a script-fidelity slip, e.g. "ANGUL" instead of "ଅନୁଗୁଳ") —
+                # compare it against the expert's readback (corrected_english),
+                # since rt_od is already Latin here.
+                if not odia_content_match and gt_od and rt_od and _is_odia_script(gt_od) and not _is_odia_script(rt_od):
+                    gt_readback_items = [p.strip() for p in gt_readback.split(",") if p.strip()]
+                    if gt_readback_items:
+                        odia_content_match = all(
+                            any(_fuzzy_equivalent(gri, ri, field) for gri in gt_readback_items)
+                            for ri in rt_items
+                        )
+                # Last resort: known place-name alias table (e.g. Angul
+                # district variants), for when neither side has any readback
+                # text to cross-check against.
+                if not odia_content_match and gt_items and rt_items:
+                    gt_aliases = {a for a in (_place_alias(g) for g in gt_items) if a}
+                    rt_aliases = {a for a in (_place_alias(r) for r in rt_items) if a}
+                    if gt_aliases and rt_aliases and gt_aliases == rt_aliases:
+                        odia_content_match = True
             content_matches = odia_content_match is True
 
             # Classification (drives highlight colour in the viewer):
