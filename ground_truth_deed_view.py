@@ -51,6 +51,20 @@ if gt is None or rt is None:
 
 comparison = build_comparison(gt, rt)
 
+if comparison.empty or "original_metadata" not in comparison.columns:
+    gt_deeds = sorted(set(gt["deed_number"])) if gt is not None else []
+    rt_deeds = sorted(set(rt["reg_no"])) if rt is not None else []
+    overlap = sorted(set(gt_deeds) & set(rt_deeds))
+    st.error(
+        "No comparable rows were produced. This usually means the two files "
+        "don't share any deed numbers.",
+        icon="🚫",
+    )
+    st.write(f"**ground_truth.csv deeds ({len(gt_deeds)}):** {gt_deeds[:20]}")
+    st.write(f"**realtime_fields.csv reg_nos ({len(rt_deeds)}):** {rt_deeds[:20]}")
+    st.write(f"**Overlapping deeds:** {overlap if overlap else 'NONE — upload matching files'}")
+    st.stop()
+
 reg_nos = sorted(comparison["deed_number"].unique().tolist())
 choice = st.selectbox("Select deed (reg_no)", reg_nos)
 ddf = comparison[comparison["deed_number"] == choice].copy()
