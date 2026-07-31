@@ -257,20 +257,19 @@ def build_comparison(gt: pd.DataFrame, rt: pd.DataFrame) -> pd.DataFrame:
             gemini_blank = (_norm_compare(rt_od) == "" and _norm_compare(rt_readback) == "")
             meta_blank = _norm_compare(original_metadata) in ("", ",")
 
-            # Genuine-content verdict: compare CONTENT KEYS (spelling/script/
-            # date-format/currency-format/duplicate differences folded away).
-            # Cross-check both channels — Gemini's readback vs the expert's
-            # readback (corrected_english), AND Gemini's Odia vs the expert's
-            # Odia — so a match on EITHER canonical channel clears the field.
-            gt_rb_key = _content_key(gt_readback, field)
-            rt_rb_key = _content_key(rt_readback, field)
+            # Genuine-content verdict: ODIA-TO-ODIA ONLY. The readback columns
+            # (latin_readback / corrected_english) are kept in the output purely
+            # for reference — they do NOT drive the match verdict. corrected_english
+            # is frequently left stale/unedited by the expert (they mainly edit
+            # corrected_odia), so basing the verdict on it produces false matches
+            # that mask real Odia content differences (e.g. Gemini echoing a
+            # metadata serial-number suffix like "-37" the real Odia transcription
+            # doesn't contain).
             gt_od_key = _content_key(gt_od, field)
             rt_od_key = _content_key(rt_od, field)
-            readback_content_match = (
-                gt_rb_key == rt_rb_key if (gt_rb_key or rt_rb_key) else None)
             odia_content_match = (
                 gt_od_key == rt_od_key if (gt_od_key or rt_od_key) else None)
-            content_matches = (readback_content_match is True) or (odia_content_match is True)
+            content_matches = odia_content_match is True
 
             # Classification (drives highlight colour in the viewer):
             #   match / spelling / formatting / dup -> no highlight
