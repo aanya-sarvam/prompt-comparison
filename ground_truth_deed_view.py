@@ -57,11 +57,13 @@ ddf = comparison[comparison["deed_number"] == choice].copy()
 
 view = ddf[[
     "field",
+    "original_metadata",
     "fresh_gemini_odia", "fresh_gemini_readback",
     "ground_truth_odia", "ground_truth_readback",
     "issue_type",
 ]].rename(columns={
     "field": "Field",
+    "original_metadata": "Original Metadata (sent to Gemini)",
     "fresh_gemini_odia": "Gemini Output (Odia)",
     "fresh_gemini_readback": "Gemini Readback (EN)",
     "ground_truth_odia": "Ground Truth (Odia)",
@@ -71,16 +73,22 @@ view = ddf[[
 
 
 def hl(row):
-    if row["Status"].startswith("content mismatch"):
+    status = row["Status"]
+    # RED: genuine content mismatch (excludes deed_type, spelling, formatting)
+    if status == "content mismatch":
         return ["background-color: #e53935; color: white; font-weight: bold;"] * len(row)
-    if row["Status"] == "script-only (content correct, wrong script)":
+    # ORANGE: both blank — nothing to locate, nothing found
+    if status.startswith("both-blank"):
         return ["background-color: #ff9800; color: black; font-weight: bold;"] * len(row)
+    # deed_type expected divergence, spelling/script/formatting → no highlight
     return [""] * len(row)
 
 
 st.dataframe(view.style.apply(hl, axis=1), use_container_width=True, hide_index=True)
 
 st.caption(
-    "🔴 red = genuine content mismatch (readback disagrees — Gemini got the value wrong). "
-    "🟠 orange = script-only (content correct, Gemini just rendered it in the wrong script)."
+    "🔴 red = genuine content mismatch (Gemini got the value wrong). "
+    "🟠 orange = both original metadata and Gemini are blank (nothing to locate). "
+    "No highlight = match, spelling/formatting-only difference, or deed_type "
+    "(English category vs on-page Odia term — expected)."
 )

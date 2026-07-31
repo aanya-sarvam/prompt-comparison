@@ -70,6 +70,110 @@ def _norm_compare(v: str) -> str:
     return v.lower()
 
 
+# --- Aggressive content-equivalence normalization (readback channel) ---------
+# Per the reviewer's rule: spelling variants, script differences, date/number
+# FORMATTING, currency formatting, and accidental DB duplication are all NOT
+# content mismatches — only a genuinely different value should be flagged red.
+
+_MONTHS = {
+    "jan": "01", "feb": "02", "mar": "03", "apr": "04", "may": "05", "jun": "06",
+    "jul": "07", "aug": "08", "sep": "09", "oct": "10", "nov": "11", "dec": "12",
+}
+# spelling-variant folding for common Odia romanization pairs
+_SPELL_FOLD = [
+    ("sahoo", "sahu"), ("oo", "u"), ("v", "b"), ("w", "b"), ("z", "j"),
+    ("ph", "f"), ("th", "t"), ("dh", "d"), ("bh", "b"), ("gh", "g"),
+    ("kh", "k"), ("ch", "c"), ("sh", "s"), ("ee", "i"), ("aa", "a"),
+    ("ou", "u"), ("y", "i"),
+]
+
+
+_ODIA_DIGITS = str.maketrans("୦୧୨୩୪୫୬୭୮୯", "0123456789")
+
+
+def _to_latin_digits(s: str) -> str:
+    return s.translate(_ODIA_DIGITS)
+
+
+def _digits_only(s: str) -> str:
+    return re.sub(r"\D", "", _to_latin_digits(s))
+
+
+def _try_date_key(v: str) -> str | None:
+    """If v looks like a date (any common format), return a canonical
+    YYYYMMDD-ish key so 07-Nov-2000 == 7th Nov 2000 == 7/11/00. Returns None
+    if it doesn't look like a date."""
+    s = _to_latin_digits(v).lower().strip()
+    s = re.sub(r"\s+", "", s)  # drop internal spaces: '9 .10 .02' -> '9.10.02'
+    # Month-name form: 7th nov 2000 / 07-nov-2000 / 26th day of march 03
+    m = re.search(r"(\d{1,2}).*?(" + "|".join(_MONTHS) + r")\w*.*?(\d{2,4})", s)
+    if m:
+        d, mon, y = m.group(1), _MONTHS[m.group(2)[:3]], m.group(3)
+        y = y[-2:]  # compare on last two year digits (deeds mix 2000/00)
+        return f"{int(d):02d}{mon}{y}"
+    # Numeric form: 22-2-2001 / 9.10.02 / 31-10-02 / 24/6/03 / 22|2|03
+    m = re.fullmatch(r"(\d{1,2})[.\-/|](\d{1,2})[.\-/|](\d{2,4})", s)
+    if m:
+        d, mon, y = m.group(1), m.group(2), m.group(3)
+        y = y[-2:]
+        return f"{int(d):02d}{int(mon):02d}{y}"
+    return None
+
+
+def _content_key(v: str, field: str = "") -> str:
+    """Canonical key for the 'is this genuinely different content?' verdict.
+    Folds away spelling / script / date-format / currency-format / duplicate
+    differences so only real content changes survive."""
+    v = _clean(v)
+    if v == "":
+        return ""
+
+    v = _to_latin_digits(v)  # Odia digits -> Latin so dates/numbers compare
+    base = field.split(".")[0]
+    attr = field.split(".")[1] if "." in field else ""
+
+    # consideration_amount: one rupee figure. Strip grouping commas and any
+    # trailing paise/decimal part (/-, /00, .00, -00) so 4,950 == 4950 and
+    # 6000/- == 6000.00 == 6000.
+    if base == "consideration_amount":
+        s = _to_latin_digits(v)
+        s = re.sub(r"[.,/\-]\s*0*\s*$", "", s)       # trailing separator+zeros
+        s = re.sub(r"[.\-/]0{1,2}\b", "", s)          # embedded .00 / -00 paise
+        d = re.sub(r"\D", "", s)
+        d = d.lstrip("0") or "0"
+        return d
+
+    # other numeric-ish fields (khata, plot, old_reg_no): digits only, but
+    # collapse comma-duplicated repeats (upstream dup) to a unique set
+    if base == "old_reg_no" or attr in {"khata", "plot"}:
+        parts = [p.strip() for p in v.split(",") if p.strip()]
+        digits = [_digits_only(p).lstrip("0") or "0" for p in parts]
+        digits = [d for d in digits if d]
+        uniq = sorted(set(digits))
+        return "|".join(uniq)
+
+    # date fields: canonical date key
+    if attr == "" and base in {"registration_date", "presentation_date", "execution_date"}:
+        dk = _try_date_key(v)
+        if dk:
+            return dk
+        # fall through to text handling if unparseable
+
+    # generic text (names, places, addresses, villages, areas): fold spelling,
+    # drop script/punctuation, collapse duplicate comma-items
+    parts = [p.strip() for p in v.split(",")]
+    folded = []
+    for p in parts:
+        p = p.lower()
+        p = re.sub(r"[^a-z0-9\u0b00-\u0b7f]", "", p)  # keep latin + odia block
+        for a, b in _SPELL_FOLD:
+            p = p.replace(a, b)
+        if p:
+            folded.append(p)
+    uniq = sorted(set(folded))
+    return "|".join(uniq)
+
+
 def load_ground_truth(path_csv: str) -> pd.DataFrame:
     gt = pd.read_csv(path_csv)
     gt["field"] = gt.apply(lambda r: canonical_field(r["section"], r["label"]), axis=1)
@@ -135,6 +239,13 @@ def build_comparison(gt: pd.DataFrame, rt: pd.DataFrame) -> pd.DataFrame:
             # corrected_english="ANGUL").
             gt_readback = gt_en
 
+            # original_metadata: the English value that was actually SENT to
+            # Gemini as the grounding target for this field (ocr_value at
+            # ingest). Blank here means Gemini was never given anything to
+            # locate for this field — so a blank Gemini result is expected,
+            # not a miss.
+            original_metadata = gemini_orig_en
+
             en_match = _norm_compare(gt_en) == _norm_compare(rt_en) if gt_en else None
             od_match = _norm_compare(gt_od) == _norm_compare(rt_od) if gt_od else None
             readback_match = (
@@ -142,24 +253,48 @@ def build_comparison(gt: pd.DataFrame, rt: pd.DataFrame) -> pd.DataFrame:
                 if gt_readback else None
             )
 
-            # Script-only mismatch: Gemini's odia_text disagrees with the
-            # expert's Odia script, BUT the romanized readback lines up fine —
-            # i.e. Gemini extracted the right content, just rendered it in the
-            # wrong script for the odia_text field. Genuine content mismatch:
-            # readback itself disagrees, meaning Gemini got the underlying
-            # value wrong, not just its script.
-            if od_match is False and readback_match is True:
-                issue_type = "script-only (content correct, wrong script)"
-            elif readback_match is False:
-                issue_type = "content mismatch"
-            elif od_match is False and readback_match is None:
-                issue_type = "content mismatch (no readback to cross-check)"
-            else:
+            gt_blank = (_norm_compare(gt_od) == "" and _norm_compare(gt_readback) == "")
+            gemini_blank = (_norm_compare(rt_od) == "" and _norm_compare(rt_readback) == "")
+            meta_blank = _norm_compare(original_metadata) in ("", ",")
+
+            # Genuine-content verdict: compare CONTENT KEYS (spelling/script/
+            # date-format/currency-format/duplicate differences folded away).
+            # Cross-check both channels — Gemini's readback vs the expert's
+            # readback (corrected_english), AND Gemini's Odia vs the expert's
+            # Odia — so a match on EITHER canonical channel clears the field.
+            gt_rb_key = _content_key(gt_readback, field)
+            rt_rb_key = _content_key(rt_readback, field)
+            gt_od_key = _content_key(gt_od, field)
+            rt_od_key = _content_key(rt_od, field)
+            readback_content_match = (
+                gt_rb_key == rt_rb_key if (gt_rb_key or rt_rb_key) else None)
+            odia_content_match = (
+                gt_od_key == rt_od_key if (gt_od_key or rt_od_key) else None)
+            content_matches = (readback_content_match is True) or (odia_content_match is True)
+
+            # Classification (drives highlight colour in the viewer):
+            #   match / spelling / formatting / dup -> no highlight
+            #   both-blank                          -> ORANGE
+            #   deed_type                           -> never red (by design)
+            #   genuine content diff                -> RED
+            base_field = field.split(".")[0]
+            if content_matches:
                 issue_type = "match"
+            elif gemini_blank and (gt_blank or meta_blank):
+                # Gemini returned nothing and there was nothing to find (either
+                # the expert also left it blank, or no metadata anchor was sent)
+                issue_type = "both-blank (nothing to locate)"
+            elif base_field == "deed_type":
+                # deed_type: Gemini transcribes the page's Odia term verbatim
+                # while the DB stores an English category label — expected.
+                issue_type = "deed_type (category vs transcription — expected)"
+            else:
+                issue_type = "content mismatch"
 
             rows.append({
                 "deed_number": deed,
                 "field": field,
+                "original_metadata": original_metadata,
                 "ground_truth_english": gt_en,
                 "fresh_gemini_english": rt_en,
                 "english_match": en_match,
