@@ -397,6 +397,27 @@ def build_comparison(gt: pd.DataFrame, rt: pd.DataFrame) -> pd.DataFrame:
                     rt_aliases = {a for a in (_place_alias(r) for r in rt_items) if a}
                     if gt_aliases and rt_aliases and gt_aliases == rt_aliases:
                         odia_content_match = True
+
+                # VILLAGE NUMBER CHECK: a fuzzy text match on the village name
+                # itself doesn't excuse a missing/different serial number
+                # (e.g. GT has "-44" but Gemini's transcription doesn't, or
+                # vice versa) — per the prompt's own rule, that number should
+                # be transcribed whenever it's genuinely on the page, so a
+                # digit mismatch here is worth surfacing even if the name text
+                # otherwise reads as the same place.
+                if odia_content_match and attr_f == "village" and gt_items and rt_items:
+                    gt_digit_sets = [set(re.findall(r"\d+", _to_latin_digits(g))) for g in gt_items]
+                    rt_digit_sets = [set(re.findall(r"\d+", _to_latin_digits(r))) for r in rt_items]
+                    if any(gt_digit_sets) or any(rt_digit_sets):
+                        # every Gemini item's digit set should match SOME GT
+                        # item's digit set (order-agnostic, same tolerance as
+                        # the name-matching above)
+                        digits_ok = all(
+                            any(rds == gds for gds in gt_digit_sets)
+                            for rds in rt_digit_sets
+                        )
+                        if not digits_ok:
+                            odia_content_match = False
             content_matches = odia_content_match is True
 
             # Classification (drives highlight colour in the viewer):
