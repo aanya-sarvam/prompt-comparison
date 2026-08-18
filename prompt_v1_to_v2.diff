@@ -1,0 +1,63 @@
+138a139,151
+> - ADDRESS (attr "address" inside seller_details / buyer_details): an address is almost always a
+>   MULTI-PART string - village/town, Post Office (PO), Police Station (PS)/Thana, and District,
+>   sometimes with a house/plot number - and it is usually written as a small block or a
+>   comma/dash-separated run of words directly next to or just below that party's name, not always
+>   on the same single line. Read the WHOLE block belonging to that party, not just the first
+>   word or line you see: PO/PS/District pieces are frequently a line or two below the name and
+>   are easy to stop short of. Concatenate the full address exactly as segmented on the page
+>   (keep the page's own punctuation/line-breaks-as-spaces), in the page's own script - do not
+>   copy only the village and skip the rest. If only part of the address block is legible, still
+>   transcribe the legible part rather than marking the whole field not found; note which part was
+>   illegible/absent. Do not pull address text belonging to a DIFFERENT party or to the property's
+>   location (that is a separate field) - match it to the correct person's own clause (see ONE
+>   FIELD = ONE ENTITY below).
+195a209,216
+>   property_boundary ("type":"boundary_list") - a SEPARATE field from property_details, describing
+>   the four sides of a plot:
+>     "1- North : <N>  South : <S>  East : <E>  West : <W> ,2- ..."
+>   Boundary descriptions on the page are usually a short block or table near the plot's schedule,
+>   phrased like "bounded on the north by ..., on the south by ...", and the value for each
+>   direction can be a PERSON'S NAME, a landmark (road, tank, canal), another plot number, or a
+>   place name - transcribe whatever is actually written for that direction, in its own script;
+>   do not assume it must be a name.
+206,207c227,229
+<      for property: the VILLAGE, KHATA, PLOT, AREA. (The relation TYPE word like "Others" is a
+<      generic label - skip it; see GENERIC below.)
+---
+>      for property: the VILLAGE, KHATA, PLOT, AREA; for boundary: the NORTH, SOUTH, EAST, WEST
+>      side descriptions. (The relation TYPE word like "Others" is a generic label - skip it; see
+>      GENERIC below.)
+214c236,237
+<                       "khata" | "plot" | "area",
+---
+>                       "khata" | "plot" | "area" | "boundary_north" | "boundary_south" |
+>                       "boundary_east" | "boundary_west",
+255,256c278,301
+<   - If they do NOT match -> you likely located the wrong text; re-scan, fix it, or mark not
+<     found. Do not report text whose readback contradicts the English.
+---
+>   - If they do NOT match, first decide WHY, because there are two different situations and they
+>     get DIFFERENT treatment:
+>     (a) WRONG LOCATION - the text you copied belongs to a different field/entity entirely (e.g.
+>         you accidentally read a different person's name, or a different plot's row). Here you
+>         really did locate the wrong text: re-scan the page for the correct row/label and fix it,
+>         or mark not found if it truly is not there.
+>     (b) RIGHT LOCATION, CONFLICTING VALUE - you are confident you read the CORRECT row/label/
+>         position on the page (the right person, the right plot, the right date stamp), but the
+>         value written there genuinely differs from english_value (e.g. the page says plot 2861
+>         where english_value says 2661; the page's amount is 40000 where english_value says
+>         50000). This is a real, useful finding, NOT an error on your part - part of this task is
+>         specifically to catch cases where the document disagrees with the database. In this case
+>         you MUST still report it as a match: set "found": true, keep "odia_text" as the exact
+>         text you read (do not blank it out), set "latin_readback" to your honest reading of that
+>         text (do NOT force it to match english_value), give a lower "confidence" to reflect the
+>         discrepancy, and describe the conflict in "notes" (e.g. "page shows 2861, english_value
+>         says 2661"). NEVER use "notes" as a substitute for the field value - if you can read a
+>         value in the ink, it belongs in "odia_text"/"latin_readback", with "notes" only
+>         describing the discrepancy. Only mark "found": false when the field's location is
+>         genuinely illegible or absent in every script, never merely because it disagrees with
+>         english_value.
+>   Do not report text whose readback contradicts the English due to a genuine mis-location (case
+>   a); DO report text whose readback contradicts the English because the source disagrees with
+>   the database (case b).
