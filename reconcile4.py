@@ -26,6 +26,73 @@ import diff_logic as dl  # noqa: E402
 LIST_IDS = {"seller_details", "buyer_details", "property_details"}
 
 
+# --------------------------------------------------------------------------
+# Best-effort Odia -> Latin transliteration, used ONLY for the expert-
+# corrected column (the DB stores no English form of the correction, since
+# the English/IGR box is never edited by experts). This is a simple,
+# rule-based Unicode transliteration -- NOT expert-verified, NOT the same
+# quality as Gemini's own contextual latin_readback for P1/P2. Always shown
+# with an "(auto)" label in the UI so it's never mistaken for ground truth.
+# --------------------------------------------------------------------------
+_ODIA_INDEP_VOWELS = {
+    "ଅ": "a", "ଆ": "aa", "ଇ": "i", "ଈ": "ii", "ଉ": "u", "ଊ": "uu",
+    "ଋ": "ru", "ଏ": "e", "ଐ": "ai", "ଓ": "o", "ଔ": "au",
+}
+_ODIA_MATRAS = {
+    "ା": "aa", "ି": "i", "ୀ": "ii", "ୁ": "u", "ୂ": "uu",
+    "ୃ": "ru", "େ": "e", "ୈ": "ai", "ୋ": "o", "ୌ": "au",
+}
+_ODIA_CONSONANTS = {
+    "କ": "k", "ଖ": "kh", "ଗ": "g", "ଘ": "gh", "ଙ": "ng",
+    "ଚ": "c", "ଛ": "ch", "ଜ": "j", "ଝ": "jh", "ଞ": "ny",
+    "ଟ": "t", "ଠ": "th", "ଡ": "d", "ଢ": "dh", "ଣ": "n",
+    "ତ": "t", "ଥ": "th", "ଦ": "d", "ଧ": "dh", "ନ": "n",
+    "ପ": "p", "ଫ": "ph", "ବ": "b", "ଭ": "bh", "ମ": "m",
+    "ଯ": "y", "ର": "r", "ଲ": "l", "ଳ": "l", "ଵ": "v",
+    "ଶ": "sh", "ଷ": "sh", "ସ": "s", "ହ": "h",
+}
+_ODIA_OTHER = {
+    "୍": "",       # virama: drop implicit vowel already handled below
+    "ଂ": "n",       # anusvara
+    "ଁ": "n",       # chandrabindu
+    "ଃ": "h",       # visarga
+    "଼": "",        # nukta
+    "ୟ": "y", "ୱ": "w",
+    "।": ".", "॥": ".",
+}
+_ODIA_DIGITS_T = {"୦": "0", "୧": "1", "୨": "2", "୩": "3", "୪": "4",
+                  "୫": "5", "୬": "6", "୭": "7", "୮": "8", "୯": "9"}
+
+
+def transliterate_odia(text: str) -> str:
+    """Rule-based Odia -> Latin, syllable by syllable. Best-effort only."""
+    if not text:
+        return ""
+    out = []
+    i, n = 0, len(text)
+    while i < n:
+        ch = text[i]
+        if ch in _ODIA_DIGITS_T:
+            out.append(_ODIA_DIGITS_T[ch]); i += 1; continue
+        if ch in _ODIA_INDEP_VOWELS:
+            out.append(_ODIA_INDEP_VOWELS[ch]); i += 1; continue
+        if ch in _ODIA_CONSONANTS:
+            base = _ODIA_CONSONANTS[ch]
+            nxt = text[i + 1] if i + 1 < n else ""
+            if nxt == "୍":                       # virama: pure consonant, no vowel
+                out.append(base); i += 2; continue
+            if nxt in _ODIA_MATRAS:               # consonant + matra
+                out.append(base + _ODIA_MATRAS[nxt]); i += 2; continue
+            out.append(base + "a"); i += 1        # inherent 'a'
+            continue
+        if ch in _ODIA_OTHER:
+            out.append(_ODIA_OTHER[ch]); i += 1; continue
+        if ch in _ODIA_MATRAS:                    # stray matra (shouldn't happen)
+            out.append(_ODIA_MATRAS[ch]); i += 1; continue
+        out.append(ch); i += 1                    # pass through (latin/space/punct)
+    return "".join(out)
+
+
 # ---------- loaders -> {deed: {(id,attr): {odia, english, readback}}} --------
 def _agg(rows):
     """Aggregate a deed's grounding rows by (id, attr): join per-item values in
@@ -179,6 +246,8 @@ def build(export_path, old_path, new_path):
             p1_od, p1_rb = o.get("odia", ""), o.get("readback", "")
             p2_od, p2_rb = n.get("odia", ""), n.get("readback", "")
 
+            expert_rb = transliterate_odia(gt_od)
+
             rows.append({
                 "deed": deed,
                 "group": "Property" if fid == "property_details" else
@@ -187,11 +256,13 @@ def build(export_path, old_path, new_path):
                 "field": field_label(fid, attr),
                 "Original IGR (sent to Gemini)": igr,
                 "Prompt 1 (Odia)": p1_od,
+                "Prompt 1 readback (EN)": p1_rb,
                 "Expert corrected (Odia)": gt_od,
+                "Expert readback (EN, auto)": expert_rb,
                 "Prompt 2 (Odia)": p2_od,
+                "Prompt 2 readback (EN)": p2_rb,
                 "P1": verdict(p1_od, p1_rb, gt_od, fname),
                 "P2": verdict(p2_od, p2_rb, gt_od, fname),
-                "_p1_rb": p1_rb, "_p2_rb": p2_rb,
             })
     return pd.DataFrame(rows), deed_types
 
